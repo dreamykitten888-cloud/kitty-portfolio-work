@@ -1769,17 +1769,8 @@
                 bubble.style.top = pos.y;
                 bubble.style.width = pos.size + "px";
                 bubble.style.height = pos.size + "px";
-
-                // Create gradient variations
-                const gradients = [
-                    "linear-gradient(135deg, #8b5cf6, #ec4899)",
-                    "linear-gradient(135deg, #ec4899, #f43f5e)",
-                    "linear-gradient(135deg, #f43f5e, #facc15)",
-                    "linear-gradient(135deg, #facc15, #fbbf24)",
-                    "linear-gradient(135deg, #06b6d4, #0ea5e9)",
-                    "linear-gradient(135deg, #a855f7, #7c3aed)",
-                ];
-                bubble.style.background = gradients[index % gradients.length];
+                // Background is handled by CSS classes (bubble-charm / bubble-jewelry)
+                // Do NOT set inline background here
             });
 
             // Initialize bubble physics
@@ -1800,94 +1791,86 @@
             mouseY = e.clientY;
         });
 
+        let physicsRunning = false;
+
         function initBubblePhysics() {
             const bubblesContainer = document.getElementById("bubblesContainer");
+            if (!bubblesContainer) return;
             const bubbles = bubblesContainer.querySelectorAll('.bubble');
             bubblePhysics = [];
 
             bubbles.forEach(bubble => {
-                const rect = bubble.getBoundingClientRect();
-                const containerRect = bubblesContainer.getBoundingClientRect();
-
                 const physics = {
                     el: bubble,
-                    homeX: rect.left - containerRect.left,
-                    homeY: rect.top - containerRect.top,
-                    currentX: 0,
-                    currentY: 0,
+                    offsetX: 0,
+                    offsetY: 0,
                     vx: 0,
-                    vy: 0,
-                    size: rect.width
+                    vy: 0
                 };
 
-                bubble.style.position = 'absolute';
-                bubble.setAttribute('data-home-x', physics.homeX);
-                bubble.setAttribute('data-home-y', physics.homeY);
-
-                // Mouse down to start dragging
                 bubble.addEventListener('mousedown', (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     isDragging = true;
                     dragBubble = physics;
-                    bubble.style.animationPlayState = 'paused';
                     bubble.style.zIndex = '10';
+                    bubble.style.cursor = 'grabbing';
                 });
 
-                // Touch support
                 bubble.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
                     isDragging = true;
                     dragBubble = physics;
-                    bubble.style.animationPlayState = 'paused';
                     bubble.style.zIndex = '10';
-                });
+                    const touch = e.touches[0];
+                    mouseX = touch.clientX;
+                    mouseY = touch.clientY;
+                }, { passive: true });
 
                 bubblePhysics.push(physics);
             });
 
-            // Mouse up to release drag
-            document.addEventListener('mouseup', () => {
+            document.addEventListener('mouseup', releaseBubble);
+            document.addEventListener('touchend', releaseBubble);
+
+            document.addEventListener('touchmove', (e) => {
+                if (isDragging && e.touches[0]) {
+                    mouseX = e.touches[0].clientX;
+                    mouseY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            function releaseBubble() {
                 if (dragBubble) {
-                    dragBubble.el.style.animationPlayState = 'running';
                     dragBubble.el.style.zIndex = '';
+                    dragBubble.el.style.cursor = 'pointer';
                 }
                 isDragging = false;
                 dragBubble = null;
-            });
+            }
 
-            // Touch end to release drag
-            document.addEventListener('touchend', () => {
-                if (dragBubble) {
-                    dragBubble.el.style.animationPlayState = 'running';
-                    dragBubble.el.style.zIndex = '';
-                }
-                isDragging = false;
-                dragBubble = null;
-            });
-
-            // Start physics loop
-            requestAnimationFrame(updatePhysics);
+            if (!physicsRunning) {
+                physicsRunning = true;
+                requestAnimationFrame(updatePhysics);
+            }
         }
 
         function updatePhysics() {
-            const REPEL_RADIUS = 80;
-            const REPEL_FORCE = 2;
-            const RETURN_FORCE = 0.02;
-            const FRICTION = 0.92;
+            const REPEL_RADIUS = 100;
+            const REPEL_FORCE = 3;
+            const RETURN_FORCE = 0.015;
+            const FRICTION = 0.9;
 
             bubblePhysics.forEach(p => {
+                const rect = p.el.getBoundingClientRect();
+                if (rect.width === 0) return; // not visible
+
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
                 if (p === dragBubble && isDragging) {
-                    // Follow mouse when dragging
-                    const rect = p.el.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
-                    p.vx = (mouseX - centerX) * 0.15;
-                    p.vy = (mouseY - centerY) * 0.15;
+                    p.vx = (mouseX - centerX) * 0.2;
+                    p.vy = (mouseY - centerY) * 0.2;
                 } else {
-                    // Repel from mouse
-                    const rect = p.el.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
                     const dx = centerX - mouseX;
                     const dy = centerY - mouseY;
                     const dist = Math.sqrt(dx * dx + dy * dy);
@@ -1898,21 +1881,24 @@
                         p.vy += (dy / dist) * force;
                     }
 
-                    // Return to home position
-                    p.vx += (p.homeX - p.currentX) * RETURN_FORCE;
-                    p.vy += (p.homeY - p.currentY) * RETURN_FORCE;
+                    // Gentle return to home (offset 0,0)
+                    p.vx += (0 - p.offsetX) * RETURN_FORCE;
+                    p.vy += (0 - p.offsetY) * RETURN_FORCE;
                 }
 
-                // Apply friction
                 p.vx *= FRICTION;
                 p.vy *= FRICTION;
 
-                // Update position
-                p.currentX += p.vx;
-                p.currentY += p.vy;
+                p.offsetX += p.vx;
+                p.offsetY += p.vy;
 
-                // Apply transform for smooth positioning
-                p.el.style.transform = `translate(${p.currentX}px, ${p.currentY}px)`;
+                // Clamp so bubbles don't fly off screen
+                p.offsetX = Math.max(-200, Math.min(200, p.offsetX));
+                p.offsetY = Math.max(-200, Math.min(200, p.offsetY));
+
+                // Use margin offset instead of transform (transform conflicts with float animations)
+                p.el.style.marginLeft = p.offsetX + "px";
+                p.el.style.marginTop = p.offsetY + "px";
             });
 
             requestAnimationFrame(updatePhysics);
