@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Space - Nail Charms & Jewelry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #FDE8F0;
+            color: #2D2D2D;
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .quote-text, .page-title {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .site-logo {
+            background: rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            padding: 12px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .site-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2D2D2D;
+        }
+
+        .site-tagline {
+            font-size: 11px;
+            color: #F699CD;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .nav-bar {
+            background: rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 50px;
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: #F699CD;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .nav-btn:hover {
+            color: #2D2D2D;
+        }
+
+        .nav-btn.active {
+            background: rgba(246, 153, 205, 0.15);
+            color: #2D2D2D;
+        }
+
+        /* ===== PAGE SECTIONS ===== */
+        .page {
+            display: none;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== QUOTE SECTION ===== */
+        .quote-section {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 40px;
+            position: relative;
+        }
+
+        /* 80s soft glow behind home quote */
+        .home-page .quote-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(246,153,205,0.25) 0%, rgba(246,153,205,0.08) 40%, transparent 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: softPulse 6s ease-in-out infinite;
+        }
+
+        @keyframes softPulse {
+            0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+        }
+
+        /* Sparkle overlay for 80s glam */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #F699CD;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 2px rgba(246,153,205,0.6);
+            pointer-events: none;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        .quote-text {
+            font-size: clamp(28px, 5vw, 48px);
+            font-weight: 400;
+            color: #2D2D2D;
+            margin-bottom: 20px;
+            max-width: 800px;
+            line-height: 1.4;
+            letter-spacing: -0.5px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-author {
+            font-size: 14px;
+            color: #F699CD;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== HOME PAGE - 80s GLAM ===== */
+        .home-content {
+            padding: 100px 40px 40px;
+        }
+
+        .cards-scroll {
+            display: flex;
+            gap: 40px;
+            overflow-x: auto;
+            padding-bottom: 40px;
+            scroll-behavior: smooth;
+        }
+
+        .cards-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .cards-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 10px;
+        }
+
+        .cards-scroll::-webkit-scrollbar-thumb {
+            background: rgba(246, 153, 205, 0.3);
+            border-radius: 10px;
+        }
+
+        .card-item {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            min-width: 600px;
+            scroll-snap-align: start;
+            transition: transform 0.4s ease;
+        }
+
+        .card-item:hover {
+            transform: translateY(-6px);
+        }
+
+        .card-number {
+            font-size: 120px;
+            font-weight: 700;
+            color: rgba(246, 153, 205, 0.15);
+            line-height: 1;
+            flex-shrink: 0;
+            width: 120px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-image {
+            width: 400px;
+            height: 300px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(246,153,205,0.2), 0 0 60px rgba(246,153,205,0.08);
+        }
+
+        /* 80s glam gradient overlays for cards */
+        .card-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(246,153,205,0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .card-image.glam-1 { background: linear-gradient(135deg, #f9a8d4, #c084fc, #f472b6); }
+        .card-image.glam-2 { background: linear-gradient(135deg, #fbbf24, #f472b6, #a78bfa); }
+        .card-image.glam-3 { background: linear-gradient(135deg, #e879f9, #fb923c, #f9a8d4); }
+        .card-image.glam-4 { background: linear-gradient(135deg, #c084fc, #f9a8d4, #fde68a); }
+        .card-image.glam-5 { background: linear-gradient(135deg, #f472b6, #fbbf24, #c084fc); }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: #F699CD;
+            font-weight: 500;
+        }
+
+        /* ===== THOUGHTS PAGE ===== */
+        .page-title {
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #F699CD;
+            margin-bottom: 60px;
+            max-width: 600px;
+        }
+
+        .thoughts-content {
+            padding: 100px 40px 40px;
+        }
+
+        .thoughts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .thought-card {
+            background: #ffffff;
+            border: 1px solid rgba(246, 153, 205, 0.25);
+            border-radius: 16px;
+            padding: 40px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .thought-card:hover {
+            background: rgba(0, 0, 0, 0.06);
+            border-color: rgba(246, 153, 205, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .thought-text {
+            font-size: 16px;
+            font-style: italic;
+            color: #2D2D2D;
+            letter-spacing: 0.3px;
+            line-height: 1.6;
+        }
+
+        /* ===== MOODBOARD PAGE (SHOP) ===== */
+        .moodboard-content {
+            padding: 100px 40px 40px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .bubbles-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
+            margin-top: 60px;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .bubble::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent);
+            border-radius: 50%;
+        }
+
+        .bubble:hover {
+            transform: scale(1.1);
+        }
+
+        .bubble-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .bubble:hover .bubble-content {
+            opacity: 1;
+        }
+
+        .bubble-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2D2D2D;
+            max-width: 90%;
+            word-wrap: break-word;
+        }
+
+        .bubble-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-20px) translateX(10px); }
+            66% { transform: translateY(-10px) translateX(-15px); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-30px) translateX(-20px); }
+            66% { transform: translateY(-5px) translateX(25px); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-15px) translateX(25px); }
+            66% { transform: translateY(-25px) translateX(-10px); }
+        }
+
+        @keyframes float4 {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            33% { transform: translateY(-35px) translateX(-15px); }
+            66% { transform: translateY(-10px) translateX(20px); }
+        }
+
+        .bubble.float1 { animation: float1 8s ease-in-out infinite; }
+        .bubble.float2 { animation: float2 10s ease-in-out infinite; }
+        .bubble.float3 { animation: float3 12s ease-in-out infinite; }
+        .bubble.float4 { animation: float4 14s ease-in-out infinite; }
+
+        /* ===== THINGS I BUY PAGE ===== */
+        .things-content {
+            padding: 100px 40px 40px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .item-card {
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+        }
+
+        .item-info {
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            border-top: none;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .item-description {
+            font-size: 13px;
+            color: #F699CD;
+            line-height: 1.5;
+        }
+
+        .item-card:hover .item-image {
+            filter: brightness(1.1);
+        }
+
+        /* ===== RESEARCH PAGE ===== */
+        .research-content {
+            padding: 100px 40px 40px;
+            position: relative;
+        }
+
+        .research-background {
+            position: absolute;
+            top: 80px;
+            left: 40px;
+            font-size: 180px;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.05);
+            line-height: 1;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            max-width: 90%;
+            word-break: break-word;
+        }
+
+        .research-foreground {
+            position: relative;
+            z-index: 1;
+        }
+
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .research-card {
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .research-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+        }
+
+        .research-info {
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .research-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            flex: 1;
+        }
+
+        .research-link {
+            font-size: 12px;
+            color: #F699CD;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .research-card:hover .research-link {
+            color: #2D2D2D;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal {
+            background: #FFF0F7;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: #F699CD;
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #2D2D2D;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .modal-description {
+            font-size: 14px;
+            color: #F699CD;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 24px;
+        }
+
+        .modal-button {
+            width: 100%;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            color: #ffd700;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .modal-button:hover {
+            background: rgba(255, 215, 0, 0.3);
+            border-color: rgba(255, 215, 0, 0.8);
+        }
+
+        /* ===== BOTTOM CONTROLS ===== */
+        .bottom-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .scroll-button {
+            background: rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 50px;
+            padding: 12px 24px;
+            color: #F699CD;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .scroll-button:hover {
+            color: #2D2D2D;
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        /* ===== MUSIC PLAYER ===== */
+        .music-player {
+            background: rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 50px;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .now-playing {
+            font-size: 11px;
+            color: #F699CD;
+            max-width: 140px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .player-btn {
+            background: rgba(0, 0, 0, 0.08);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .player-btn:hover {
+            background: rgba(246, 153, 205, 0.3);
+        }
+
+        .player-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: #2D2D2D;
+            stroke: #2D2D2D;
+            stroke-width: 2;
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 80px;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #F699CD;
+            cursor: pointer;
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #F699CD;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            stroke: #888888;
+            fill: none;
+            stroke-width: 2;
+            transition: stroke 0.3s ease;
+        }
+
+        .theme-toggle:hover svg {
+            stroke: #ffffff;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header, .nav-container {
+                position: relative;
+                top: auto;
+                left: auto;
+                right: auto;
+                margin-bottom: 20px;
+            }
+
+            .container {
+                padding-top: 0;
+            }
+
+            .home-content, .thoughts-content, .things-content, .research-content, .moodboard-content {
+                padding: 40px 20px 20px;
+            }
+
+            .quote-section {
+                padding: 40px 20px;
+            }
+
+            .quote-text {
+                font-size: 28px;
+            }
+
+            .card-item {
+                min-width: 100%;
+                flex-direction: column;
+            }
+
+            .card-image {
+                width: 100%;
+                height: 250px;
+            }
+
+            .card-number {
+                font-size: 60px;
+            }
+
+            .thoughts-grid, .items-grid, .research-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bubbles-container {
+                height: 1200px;
+            }
+
+            .modal {
+                padding: 30px;
+            }
+
+            .bottom-controls {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         🎨 CUSTOMIZE YOUR SITE HERE - EASY EDIT ZONE
+         ============================================ -->
+    <script>
+        // CONFIGURATION OBJECT - Edit these values to customize your site
+        const CONFIG = {
+            // Site basic info
+            siteName: "My Space",
+            tagline: "a home for the mind",
+
+            // Color scheme
+            colors: {
+                background: "#FDE8F0",
+                text: "#2D2D2D",
+                accent: "#F699CD",
+                cardBackground: "#FFF0F7",
+            },
+
+            // Font families (using Google Fonts)
+            fonts: {
+                heading: "'Playfair Display', serif",
+                body: "'Quicksand', sans-serif",
+            },
+
+            // Quotes for each page
+            quotes: {
+                home: {
+                    text: "The mind is everything. What you think, you become.",
+                    author: "Buddha"
+                },
+                moodboard: {
+                    text: "Jewelry and charms are the poetry of beauty—small moments of brilliance we carry with us.",
+                    author: "Design Philosophy"
+                },
+                thingsIBuy: {
+                    text: "We collect moments, not things. Each piece tells a story.",
+                    author: "Curator's Wisdom"
+                },
+                research: {
+                    text: "The intersection of art and craft reveals timeless truths.",
+                    author: "Creative Discovery"
+                },
+                thoughts: {
+                    text: "A thought preserved is a moment crystallized forever.",
+                    author: "Reflections"
+                }
+            },
+
+            // MUSIC PLAYLIST - Add your husband's tracks here!
+            // For each song, provide:
+            //   title: the song name that shows in the player
+            //   artist: the artist name
+            //   src: the URL or file path to the audio file
+            //        (supports .mp3, .wav, .ogg, .m4a)
+            //        You can use local files like "music/song.mp3"
+            //        or links from SoundCloud, etc.
+            music: [
+                { title: "First Track", artist: "Your Husband's Name", src: "" },
+                { title: "Second Track", artist: "Your Husband's Name", src: "" },
+                { title: "Third Track", artist: "Your Husband's Name", src: "" },
+            ],
+
+            // Navigation tabs (order matters)
+            navTabs: ["Home", "Thoughts", "Shop", "Moodboard", "Research"],
+
+            // PRODUCTS - The main shop items (for Moodboard page)
+            // These appear as floating bubbles
+            products: [
+                {
+                    name: "Crystal Butterfly Charm",
+                    price: "$12",
+                    description: "Delicate crystalline butterfly perfect for nail art or jewelry. Catches light beautifully.",
+                    link: "#"
+                },
+                {
+                    name: "Gold Moon Ring",
+                    price: "$28",
+                    description: "Elegant crescent moon design in polished gold. A celestial statement piece.",
+                    link: "#"
+                },
+                {
+                    name: "Rose Quartz Pendant",
+                    price: "$18",
+                    description: "Soft pink rose quartz set in silver. Brings calm and love energy.",
+                    link: "#"
+                },
+                {
+                    name: "Star Burst Nail Charm",
+                    price: "$10",
+                    description: "Vibrant multi-pointed star charm. Perfect for festival nails.",
+                    link: "#"
+                },
+                {
+                    name: "Amethyst Crown Ring",
+                    price: "$35",
+                    description: "Regal amethyst gemstone in ornate crown setting. A luxury piece.",
+                    link: "#"
+                },
+                {
+                    name: "Minimal Gold Bar Charm",
+                    price: "$8",
+                    description: "Clean, sleek gold bar design. Perfect with any nail look.",
+                    link: "#"
+                },
+                {
+                    name: "Moonstone Trio Charm",
+                    price: "$15",
+                    description: "Three delicate moonstones arranged in a triangle. Ethereal and modern.",
+                    link: "#"
+                },
+                {
+                    name: "Pearl Cluster Ring",
+                    price: "$32",
+                    description: "Vintage-inspired cluster of freshwater pearls. Timeless elegance.",
+                    link: "#"
+                },
+                {
+                    name: "Opal Leaf Charm",
+                    price: "$14",
+                    description: "Iridescent opal carved into a delicate leaf shape.",
+                    link: "#"
+                },
+                {
+                    name: "Diamond Mini Stud",
+                    price: "$22",
+                    description: "Tiny diamond-like CZ stud. Perfect for subtle sparkle.",
+                    link: "#"
+                },
+                {
+                    name: "Turquoise Feather Charm",
+                    price: "$16",
+                    description: "Bright turquoise feather design. Bohemian and eye-catching.",
+                    link: "#"
+                },
+                {
+                    name: "Sterling Silver Cross",
+                    price: "$20",
+                    description: "Minimalist cross charm in pure sterling silver.",
+                    link: "#"
+                },
+                {
+                    name: "Sapphire Starburst Ring",
+                    price: "$38",
+                    description: "Deep blue sapphires arranged in a starburst pattern.",
+                    link: "#"
+                },
+                {
+                    name: "Gold Filigree Charm",
+                    price: "$11",
+                    description: "Ornate gold filigree work. Delicate and intricate detail.",
+                    link: "#"
+                },
+                {
+                    name: "Emerald Drop Pendant",
+                    price: "$25",
+                    description: "Rich emerald green in a simple drop setting. Sophisticated and bold.",
+                    link: "#"
+                }
+            ],
+
+            // THOUGHTS - Quotes for thoughts page
+            thoughts: [
+                "Beauty exists in the smallest details",
+                "Every piece carries intention and meaning",
+                "Craft is a form of meditation",
+                "We are what we adorn ourselves with",
+                "Minimalism is the art of subtraction",
+                "Handmade connects heart to hand",
+                "Sparkle is a state of mind",
+                "The best jewelry whispers, doesn't shout",
+                "Quality over quantity, always",
+                "Each scratch tells a story",
+                "Tradition meets innovation",
+                "Adornment is self-expression"
+            ],
+
+            // HOME PAGE CARDS
+            homeCards: [
+                {
+                    title: "Curated Collection",
+                    subtitle: "Hand-selected charms and jewelry that inspire",
+                    image: "gradient1"
+                },
+                {
+                    title: "Craftsmanship",
+                    subtitle: "Each piece made with intention and care",
+                    image: "gradient2"
+                },
+                {
+                    title: "Personal Style",
+                    subtitle: "Express yourself through adornment",
+                    image: "gradient3"
+                },
+                {
+                    title: "Timeless Beauty",
+                    subtitle: "Pieces that last beyond seasons",
+                    image: "gradient4"
+                }
+            ],
+
+            // THINGS I BUY PAGE ITEMS
+            thingsItems: [
+                {
+                    title: "Artisan Beads",
+                    description: "Sourced from independent craftspeople worldwide",
+                    link: "#"
+                },
+                {
+                    title: "Gemstone Cutting",
+                    description: "Traditional lapidary techniques",
+                    link: "#"
+                },
+                {
+                    title: "Metalworking Tools",
+                    description: "Essential instruments for jewelry creation",
+                    link: "#"
+                },
+                {
+                    title: "Leather Cord",
+                    description: "Premium materials for stringing",
+                    link: "#"
+                },
+                {
+                    title: "Precious Metals",
+                    description: "Gold, silver, and platinum supplies",
+                    link: "#"
+                },
+                {
+                    title: "Resin & Molds",
+                    description: "For creating custom charms",
+                    link: "#"
+                }
+            ],
+
+            // RESEARCH PAGE RESOURCES
+            researchItems: [
+                {
+                    title: "The History of Jewelry",
+                    link: "https://example.com/jewelry-history"
+                },
+                {
+                    title: "Gemstone Properties",
+                    link: "https://example.com/gemstones"
+                },
+                {
+                    title: "Metalworking Techniques",
+                    link: "https://example.com/metalworking"
+                },
+                {
+                    title: "Design Principles",
+                    link: "https://example.com/design"
+                },
+                {
+                    title: "Sustainability in Fashion",
+                    link: "https://example.com/sustainability"
+                },
+                {
+                    title: "Color Theory & Design",
+                    link: "https://example.com/color-theory"
+                }
+            ]
+        };
+    </script>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="site-logo">
+            <div class="site-name" id="siteName">My Space</div>
+            <div class="site-tagline" id="siteTagline">a home for the mind</div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="nav-container">
+        <div class="nav-bar" id="navBar"></div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div class="page home-page active" id="homePage">
+            <div class="quote-section">
+                <div class="quote-text" id="homeQuote"></div>
+                <div class="quote-author" id="homeQuoteAuthor"></div>
+            </div>
+            <div class="home-content">
+                <div class="cards-scroll" id="cardsScroll"></div>
+            </div>
+        </div>
+
+        <!-- THOUGHTS PAGE -->
+        <div class="page thoughts-page" id="thoughtsPage">
+            <div class="quote-section">
+                <div class="quote-text" id="thoughtsQuote"></div>
+                <div class="quote-author" id="thoughtsQuoteAuthor"></div>
+            </div>
+            <div class="thoughts-content">
+                <div class="page-title">Thoughts</div>
+                <div class="page-subtitle">Fragments of perspective — raw ideas, passing intuitions, and observations.</div>
+                <div class="thoughts-grid" id="thoughtsGrid"></div>
+            </div>
+        </div>
+
+        <!-- MOODBOARD PAGE (SHOP) -->
+        <div class="page moodboard-page" id="moodboardPage">
+            <div class="quote-section">
+                <div class="quote-text" id="moodboardQuote"></div>
+                <div class="quote-author" id="moodboardQuoteAuthor"></div>
+            </div>
+            <div class="moodboard-content">
+                <div class="page-title">Shop</div>
+                <div class="page-subtitle">Curated collection of beautiful charms and jewelry pieces.</div>
+                <div class="bubbles-container" id="bubblesContainer"></div>
+            </div>
+        </div>
+
+        <!-- THINGS I BUY PAGE -->
+        <div class="page things-page" id="thingsPage">
+            <div class="quote-section">
+                <div class="quote-text" id="thingsQuote"></div>
+                <div class="quote-author" id="thingsQuoteAuthor"></div>
+            </div>
+            <div class="things-content">
+                <div class="page-title">Moodboard</div>
+                <div class="page-subtitle">Curated finds and recommendations from creators and artisans.</div>
+                <div class="items-grid" id="thingsGrid"></div>
+            </div>
+        </div>
+
+        <!-- RESEARCH PAGE -->
+        <div class="page research-page" id="researchPage">
+            <div class="quote-section">
+                <div class="quote-text" id="researchQuote"></div>
+                <div class="quote-author" id="researchQuoteAuthor"></div>
+            </div>
+            <div class="research-content">
+                <div class="research-background" id="researchBackground">Research</div>
+                <div class="research-foreground">
+                    <div class="page-title">Research</div>
+                    <div class="page-subtitle">Links, findings, and discoveries from the edge of technology, design, and philosophy.</div>
+                    <div class="research-grid" id="researchGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="productModal">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-image"></div>
+            <div class="modal-name" id="modalName"></div>
+            <div class="modal-description" id="modalDescription"></div>
+            <div class="modal-price" id="modalPrice"></div>
+            <a class="modal-button" id="modalButton" href="#" target="_blank">Shop Now</a>
+        </div>
+    </div>
+
+    <!-- BOTTOM CONTROLS -->
+    <div class="bottom-controls">
+        <button class="scroll-button" id="scrollButton">scroll in calm</button>
+        <!-- MUSIC PLAYER -->
+        <div class="music-player" id="musicPlayer">
+            <div class="now-playing" id="nowPlaying">No track loaded</div>
+            <div class="player-controls">
+                <button class="player-btn" id="playBtn" title="Play/Pause">
+                    <svg viewBox="0 0 24 24" id="playIcon"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                    <svg viewBox="0 0 24 24" id="pauseIcon" style="display:none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                </button>
+                <button class="player-btn" id="skipBtn" title="Next Track">
+                    <svg viewBox="0 0 24 24"><polygon points="5,4 15,12 5,20"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                </button>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80" title="Volume">
+            </div>
+        </div>
+        <audio id="audioElement"></audio>
+    </div>
+
+    <!-- THEME TOGGLE -->
+    <div class="theme-toggle" id="themeToggle">
+        <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </div>
+
+    <script>
+        // ============================================
+        // APPLICATION STATE & INITIALIZATION
+        // ============================================
+
+        let currentPage = "Home";
+        let isDarkMode = true;
+
+        // Initialize the site
+        function initializeSite() {
+            updateSiteInfo();
+            createNavigation();
+            populateAllPages();
+            setupEventListeners();
+            loadBubblePositions();
+        }
+
+        // ============================================
+        // SITE INFO UPDATES
+        // ============================================
+
+        function updateSiteInfo() {
+            document.getElementById("siteName").textContent = CONFIG.siteName;
+            document.getElementById("siteTagline").textContent = CONFIG.tagline;
+        }
+
+        // ============================================
+        // NAVIGATION SETUP
+        // ============================================
+
+        function createNavigation() {
+            const navBar = document.getElementById("navBar");
+            navBar.innerHTML = "";
+
+            CONFIG.navTabs.forEach((tab) => {
+                const btn = document.createElement("button");
+                btn.className = "nav-btn" + (tab === "Home" ? " active" : "");
+                btn.textContent = tab;
+                btn.onclick = () => switchPage(tab);
+                navBar.appendChild(btn);
+            });
+        }
+
+        function switchPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll(".page").forEach((page) => {
+                page.classList.remove("active");
+            });
+
+            // Update nav buttons
+            document.querySelectorAll(".nav-btn").forEach((btn) => {
+                btn.classList.remove("active");
+                if (btn.textContent === pageName) {
+                    btn.classList.add("active");
+                }
+            });
+
+            // Show selected page
+            const pageMap = {
+                Home: "homePage",
+                Thoughts: "thoughtsPage",
+                Shop: "moodboardPage",
+                Moodboard: "thingsPage",
+                Research: "researchPage"
+            };
+
+            const pageId = pageMap[pageName];
+            if (pageId) {
+                document.getElementById(pageId).classList.add("active");
+                currentPage = pageName;
+            }
+        }
+
+        // ============================================
+        // PAGE POPULATION
+        // ============================================
+
+        function populateAllPages() {
+            populateHomeCard();
+            populateThoughtsPage();
+            populateMoodboardPage();
+            populateThingsPage();
+            populateResearchPage();
+            populateQuotes();
+        }
+
+        function populateQuotes() {
+            // Home quote
+            document.getElementById("homeQuote").textContent = CONFIG.quotes.home.text;
+            document.getElementById("homeQuoteAuthor").textContent = CONFIG.quotes.home.author;
+
+            // Thoughts quote
+            document.getElementById("thoughtsQuote").textContent = CONFIG.quotes.thoughts.text;
+            document.getElementById("thoughtsQuoteAuthor").textContent = CONFIG.quotes.thoughts.author;
+
+            // Moodboard quote
+            document.getElementById("moodboardQuote").textContent = CONFIG.quotes.moodboard.text;
+            document.getElementById("moodboardQuoteAuthor").textContent = CONFIG.quotes.moodboard.author;
+
+            // Things quote
+            document.getElementById("thingsQuote").textContent = CONFIG.quotes.thingsIBuy.text;
+            document.getElementById("thingsQuoteAuthor").textContent = CONFIG.quotes.thingsIBuy.author;
+
+            // Research quote
+            document.getElementById("researchQuote").textContent = CONFIG.quotes.research.text;
+            document.getElementById("researchQuoteAuthor").textContent = CONFIG.quotes.research.author;
+        }
+
+        function populateHomeCard() {
+            const cardsScroll = document.getElementById("cardsScroll");
+            cardsScroll.innerHTML = "";
+
+            CONFIG.homeCards.forEach((card, index) => {
+                const glamClass = "glam-" + ((index % 5) + 1);
+                const cardItem = document.createElement("div");
+                cardItem.className = "card-item";
+                cardItem.innerHTML = `
+                    <div class="card-number">${index + 1}</div>
+                    <div class="card-content">
+                        <div class="card-image ${glamClass}">${card.image && card.image !== 'gradient1' ? '<img src="' + card.image + '" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">' : 'your image here'}</div>
+                        <div class="card-title">${card.title}</div>
+                        <div class="card-subtitle">${card.subtitle}</div>
+                    </div>
+                `;
+                cardsScroll.appendChild(cardItem);
+            });
+
+            // Add sparkle elements to home page quote section for 80s glam
+            const homeQuoteSection = document.querySelector(".home-page .quote-section");
+            if (homeQuoteSection) {
+                for (let i = 0; i < 15; i++) {
+                    const sparkle = document.createElement("div");
+                    sparkle.className = "sparkle";
+                    sparkle.style.left = Math.random() * 100 + "%";
+                    sparkle.style.top = Math.random() * 100 + "%";
+                    sparkle.style.animationDelay = (Math.random() * 4) + "s";
+                    sparkle.style.animationDuration = (2 + Math.random() * 3) + "s";
+                    sparkle.style.width = (2 + Math.random() * 4) + "px";
+                    sparkle.style.height = sparkle.style.width;
+                    homeQuoteSection.appendChild(sparkle);
+                }
+            }
+        }
+
+        function populateThoughtsPage() {
+            const thoughtsGrid = document.getElementById("thoughtsGrid");
+            thoughtsGrid.innerHTML = "";
+
+            CONFIG.thoughts.forEach((thought) => {
+                const card = document.createElement("div");
+                card.className = "thought-card";
+                card.innerHTML = `<div class="thought-text">"${thought}"</div>`;
+                thoughtsGrid.appendChild(card);
+            });
+        }
+
+        function populateMoodboardPage() {
+            const bubblesContainer = document.getElementById("bubblesContainer");
+            bubblesContainer.innerHTML = "";
+
+            CONFIG.products.forEach((product, index) => {
+                const bubble = document.createElement("div");
+                bubble.className = `bubble float${(index % 4) + 1}`;
+                bubble.innerHTML = `
+                    <div class="bubble-content">
+                        <div class="bubble-name">${product.name}</div>
+                        <div class="bubble-price">${product.price}</div>
+                    </div>
+                `;
+                bubble.onclick = () => openProductModal(index);
+                bubblesContainer.appendChild(bubble);
+            });
+        }
+
+        function populateThingsPage() {
+            const thingsGrid = document.getElementById("thingsGrid");
+            thingsGrid.innerHTML = "";
+
+            CONFIG.thingsItems.forEach((item) => {
+                const card = document.createElement("div");
+                card.className = "item-card";
+                card.innerHTML = `
+                    <div class="item-image">Curated Item</div>
+                    <div class="item-info">
+                        <div class="item-title">${item.title}</div>
+                        <div class="item-description">${item.description}</div>
+                    </div>
+                `;
+                thingsGrid.appendChild(card);
+            });
+        }
+
+        function populateResearchPage() {
+            const researchGrid = document.getElementById("researchGrid");
+            researchGrid.innerHTML = "";
+
+            CONFIG.researchItems.forEach((item) => {
+                const card = document.createElement("a");
+                card.href = item.link;
+                card.target = "_blank";
+                card.className = "research-card";
+                card.innerHTML = `
+                    <div class="research-image">Research Resource</div>
+                    <div class="research-info">
+                        <div class="research-title">${item.title}</div>
+                        <div class="research-link">${new URL(item.link).hostname}</div>
+                    </div>
+                `;
+                researchGrid.appendChild(card);
+            });
+        }
+
+        // ============================================
+        // BUBBLE POSITIONING (SCATTERED LAYOUT)
+        // ============================================
+
+        function loadBubblePositions() {
+            const container = document.getElementById("bubblesContainer");
+            const bubbles = container.querySelectorAll(".bubble");
+
+            // Predefined positions and sizes for a nice scattered layout
+            const positions = [
+                { x: "10%", y: "5%", size: 80 },
+                { x: "25%", y: "20%", size: 120 },
+                { x: "50%", y: "8%", size: 100 },
+                { x: "70%", y: "30%", size: 140 },
+                { x: "85%", y: "10%", size: 90 },
+                { x: "15%", y: "45%", size: 110 },
+                { x: "40%", y: "50%", size: 130 },
+                { x: "75%", y: "55%", size: 100 },
+                { x: "20%", y: "70%", size: 95 },
+                { x: "55%", y: "70%", size: 125 },
+                { x: "80%", y: "75%", size: 85 },
+                { x: "35%", y: "25%", size: 105 },
+                { x: "60%", y: "35%", size: 115 },
+                { x: "10%", y: "85%", size: 100 },
+                { x: "65%", y: "15%", size: 110 }
+            ];
+
+            bubbles.forEach((bubble, index) => {
+                const pos = positions[index % positions.length];
+                bubble.style.left = pos.x;
+                bubble.style.top = pos.y;
+                bubble.style.width = pos.size + "px";
+                bubble.style.height = pos.size + "px";
+
+                // Create gradient variations
+                const gradients = [
+                    "linear-gradient(135deg, #8b5cf6, #ec4899)",
+                    "linear-gradient(135deg, #ec4899, #f43f5e)",
+                    "linear-gradient(135deg, #f43f5e, #facc15)",
+                    "linear-gradient(135deg, #facc15, #fbbf24)",
+                    "linear-gradient(135deg, #06b6d4, #0ea5e9)",
+                    "linear-gradient(135deg, #a855f7, #7c3aed)",
+                ];
+                bubble.style.background = gradients[index % gradients.length];
+            });
+        }
+
+        // ============================================
+        // PRODUCT MODAL
+        // ============================================
+
+        function openProductModal(index) {
+            const product = CONFIG.products[index];
+            if (!product) return;
+
+            document.getElementById("modalName").textContent = product.name;
+            document.getElementById("modalDescription").textContent = product.description;
+            document.getElementById("modalPrice").textContent = product.price;
+            document.getElementById("modalButton").href = product.link;
+            document.getElementById("modalOverlay").classList.add("active");
+        }
+
+        function closeProductModal() {
+            document.getElementById("modalOverlay").classList.remove("active");
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+
+        function setupEventListeners() {
+            // Modal close button
+            document.getElementById("modalClose").onclick = closeProductModal;
+
+            // Modal overlay click to close
+            document.getElementById("modalOverlay").onclick = (e) => {
+                if (e.target.id === "modalOverlay") {
+                    closeProductModal();
+                }
+            };
+
+            // Scroll button
+            document.getElementById("scrollButton").onclick = () => {
+                window.scrollBy({ top: window.innerHeight * 0.5, behavior: "smooth" });
+            };
+
+            // Theme toggle
+            document.getElementById("themeToggle").onclick = toggleTheme;
+
+            // Keyboard navigation
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeProductModal();
+                if (e.key === "ArrowRight") {
+                    const currentIndex = CONFIG.navTabs.indexOf(currentPage);
+                    if (currentIndex < CONFIG.navTabs.length - 1) {
+                        switchPage(CONFIG.navTabs[currentIndex + 1]);
+                    }
+                }
+                if (e.key === "ArrowLeft") {
+                    const currentIndex = CONFIG.navTabs.indexOf(currentPage);
+                    if (currentIndex > 0) {
+                        switchPage(CONFIG.navTabs[currentIndex - 1]);
+                    }
+                }
+            });
+        }
+
+        // ============================================
+        // THEME TOGGLE
+        // ============================================
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            const root = document.documentElement;
+
+            if (isDarkMode) {
+                root.style.setProperty("--bg-color", "#1a1a1a");
+                root.style.setProperty("--text-color", "#FFF0F7");
+                document.body.style.backgroundColor = "#1a1a1a";
+                document.body.style.color = "#FFF0F7";
+            } else {
+                root.style.setProperty("--bg-color", "#FDE8F0");
+                root.style.setProperty("--text-color", "#2D2D2D");
+                document.body.style.backgroundColor = "#FDE8F0";
+                document.body.style.color = "#2D2D2D";
+            }
+        }
+
+        // ============================================
+        // MUSIC PLAYER
+        // ============================================
+        let currentTrack = 0;
+        let isPlaying = false;
+        const audio = document.getElementById("audioElement");
+        const playBtn = document.getElementById("playBtn");
+        const skipBtn = document.getElementById("skipBtn");
+        const volumeSlider = document.getElementById("volumeSlider");
+        const nowPlaying = document.getElementById("nowPlaying");
+        const playIcon = document.getElementById("playIcon");
+        const pauseIcon = document.getElementById("pauseIcon");
+
+        function loadTrack(index) {
+            const tracks = CONFIG.music;
+            if (!tracks || tracks.length === 0) {
+                nowPlaying.textContent = "Add tracks in CONFIG";
+                return;
+            }
+            currentTrack = index % tracks.length;
+            const track = tracks[currentTrack];
+            if (track.src) {
+                audio.src = track.src;
+                nowPlaying.textContent = track.title + " — " + track.artist;
+            } else {
+                nowPlaying.textContent = track.title + " (no file yet)";
+            }
+        }
+
+        function togglePlay() {
+            const tracks = CONFIG.music;
+            if (!tracks || tracks.length === 0 || !tracks[currentTrack].src) {
+                nowPlaying.textContent = "Add an audio file URL in CONFIG first!";
+                return;
+            }
+            if (isPlaying) {
+                audio.pause();
+                playIcon.style.display = "block";
+                pauseIcon.style.display = "none";
+            } else {
+                audio.play().catch(function() {
+                    nowPlaying.textContent = "Could not play — check file path";
+                });
+                playIcon.style.display = "none";
+                pauseIcon.style.display = "block";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function skipTrack() {
+            const wasPlaying = isPlaying;
+            if (isPlaying) { audio.pause(); isPlaying = false; }
+            loadTrack(currentTrack + 1);
+            if (wasPlaying && CONFIG.music[currentTrack].src) {
+                audio.play();
+                isPlaying = true;
+                playIcon.style.display = "none";
+                pauseIcon.style.display = "block";
+            }
+        }
+
+        // When a track ends, auto-play next
+        audio.addEventListener("ended", function() {
+            skipTrack();
+        });
+
+        playBtn.addEventListener("click", togglePlay);
+        skipBtn.addEventListener("click", skipTrack);
+        volumeSlider.addEventListener("input", function() {
+            audio.volume = this.value / 100;
+        });
+        audio.volume = 0.8;
+
+        // Load first track on startup
+        function initializeMusic() {
+            loadTrack(0);
+        }
+
+        // ============================================
+        // INITIALIZE ON LOAD
+        // ============================================
+
+        function fullInit() { initializeSite(); initializeMusic(); }
+        document.addEventListener("DOMContentLoaded", fullInit);
+
+        // Fallback initialization in case DOMContentLoaded already fired
+        if (document.readyState !== "loading") {
+            fullInit();
+        }
+    </script>
+</body>
+</html>
