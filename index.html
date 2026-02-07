@@ -100,6 +100,11 @@
 
         .nav-btn:hover {
             color: #4A1259;
+            transform: scale(1.05);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.98);
         }
 
         .nav-btn.active {
@@ -151,9 +156,22 @@
             to { opacity: 1; }
         }
 
-        /* ===== QUOTE SECTION ===== */
-        .quote-section {
-            min-height: 60vh;
+        /* ===== CUSTOM CURSOR TRAIL ===== */
+        .cursor-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, rgba(246, 153, 205, 0.8), rgba(246, 153, 205, 0.3));
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            box-shadow: 0 0 10px rgba(246, 153, 205, 0.5);
+        }
+
+        /* ===== HOME PAGE - EDITORIAL LANDING ===== */
+        .home-page .quote-section {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -161,32 +179,67 @@
             text-align: center;
             padding: 60px 40px;
             position: relative;
+            overflow: hidden;
         }
 
-        /* 80s soft glow behind home quote */
+        .quote-issue {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #F699CD;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .quote-divider {
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #F699CD, transparent);
+            margin: 20px auto;
+        }
+
+        /* Watermark text behind quote */
         .home-page .quote-section::before {
+            content: 'SPARKLE';
+            position: absolute;
+            font-size: 300px;
+            font-weight: 900;
+            color: rgba(246, 153, 205, 0.08);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            white-space: nowrap;
+            pointer-events: none;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 20px;
+        }
+
+        /* Dramatic glow behind quote */
+        .home-page .quote-section::after {
             content: '';
             position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(246,153,205,0.25) 0%, rgba(246,153,205,0.08) 40%, transparent 70%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(246,153,205,0.3) 0%, rgba(246,153,205,0.15) 30%, transparent 70%);
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
             animation: softPulse 6s ease-in-out infinite;
+            z-index: 0;
         }
 
         @keyframes softPulse {
             0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
         }
 
         /* Sparkle overlay for 80s glam */
         @keyframes twinkle {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
         }
 
         .sparkle {
@@ -200,17 +253,52 @@
             animation: twinkle 3s ease-in-out infinite;
         }
 
+        .sparkle.gold {
+            background: #FFD700;
+            box-shadow: 0 0 8px 2px rgba(255,215,0,0.6);
+        }
+
+        /* Mouse-follow glow effect */
+        .mouse-glow {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(246, 153, 205, 0.2), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(40px);
+        }
+
+        /* Word-by-word text animation */
+        @keyframes wordReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .quote-word {
+            display: inline;
+            animation: wordReveal 0.6s ease-out forwards;
+            animation-fill-mode: both;
+        }
+
         .quote-text {
-            font-size: clamp(28px, 5vw, 48px);
+            font-size: clamp(36px, 5vw, 56px);
             font-weight: 400;
             color: #4A1259;
-            margin-bottom: 20px;
-            max-width: 800px;
+            max-width: 900px;
             line-height: 1.4;
             letter-spacing: -0.5px;
             font-style: italic;
             position: relative;
             z-index: 1;
+            margin-bottom: 20px;
         }
 
         .quote-author {
@@ -222,54 +310,45 @@
             z-index: 1;
         }
 
-        /* ===== HOME PAGE - 80s GLAM ===== */
+        /* ===== HOME PAGE - MAGAZINE GRID ===== */
         .home-content {
             padding: 100px 40px 40px;
+            position: relative;
+            z-index: 1;
         }
 
-        .cards-scroll {
-            display: flex;
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
-            overflow-x: auto;
             padding-bottom: 40px;
-            scroll-behavior: smooth;
-        }
-
-        .cards-scroll::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .cards-scroll::-webkit-scrollbar-track {
-            background: rgba(74, 18, 89, 0.06);
-            border-radius: 10px;
-        }
-
-        .cards-scroll::-webkit-scrollbar-thumb {
-            background: rgba(246, 153, 205, 0.3);
-            border-radius: 10px;
         }
 
         .card-item {
             display: flex;
-            gap: 30px;
-            align-items: flex-start;
-            min-width: 600px;
-            scroll-snap-align: start;
-            transition: transform 0.4s ease;
+            flex-direction: column;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.6s ease;
+        }
+
+        .card-item.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .card-item:hover {
-            transform: translateY(-6px);
+            transform: translateY(-10px);
         }
 
         .card-number {
-            font-size: 120px;
+            font-size: 80px;
             font-weight: 700;
             color: rgba(246, 153, 205, 0.15);
             line-height: 1;
-            flex-shrink: 0;
-            width: 120px;
             font-family: 'Playfair Display', serif;
+            align-self: flex-start;
         }
 
         .card-content {
@@ -277,8 +356,8 @@
         }
 
         .card-image {
-            width: 400px;
-            height: 300px;
+            width: 100%;
+            height: 250px;
             border-radius: 20px;
             margin-bottom: 20px;
             display: flex;
@@ -291,6 +370,21 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 8px 32px rgba(246,153,205,0.2), 0 0 60px rgba(246,153,205,0.08);
+            backdrop-filter: blur(2px);
+            perspective: 1000px;
+            transition: all 0.4s ease;
+        }
+
+        .card-item:hover .card-image {
+            transform: perspective(1000px) rotateX(5deg) rotateY(-5deg);
+            box-shadow: 0 16px 48px rgba(246,153,205,0.3), 0 0 80px rgba(246,153,205,0.12);
+        }
+
+        /* Glass morphism effect for cards */
+        .card-image {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         /* 80s glam gradient overlays for cards */
@@ -300,13 +394,14 @@
             inset: 0;
             background: linear-gradient(135deg, rgba(246,153,205,0.15) 0%, transparent 60%);
             pointer-events: none;
+            border-radius: 20px;
         }
 
-        .card-image.glam-1 { background: linear-gradient(135deg, #f9a8d4, #c084fc, #f472b6); }
-        .card-image.glam-2 { background: linear-gradient(135deg, #fbbf24, #f472b6, #a78bfa); }
-        .card-image.glam-3 { background: linear-gradient(135deg, #e879f9, #fb923c, #f9a8d4); }
-        .card-image.glam-4 { background: linear-gradient(135deg, #c084fc, #f9a8d4, #fde68a); }
-        .card-image.glam-5 { background: linear-gradient(135deg, #f472b6, #fbbf24, #c084fc); }
+        .card-image.glam-1 { background: linear-gradient(135deg, rgba(249,168,212,0.3) 0%, rgba(192,132,252,0.3) 50%, rgba(244,114,182,0.3) 100%); }
+        .card-image.glam-2 { background: linear-gradient(135deg, rgba(251,191,36,0.3) 0%, rgba(244,114,182,0.3) 50%, rgba(167,139,250,0.3) 100%); }
+        .card-image.glam-3 { background: linear-gradient(135deg, rgba(232,121,249,0.3) 0%, rgba(251,146,60,0.3) 50%, rgba(249,168,212,0.3) 100%); }
+        .card-image.glam-4 { background: linear-gradient(135deg, rgba(192,132,252,0.3) 0%, rgba(249,168,212,0.3) 50%, rgba(253,230,138,0.3) 100%); }
+        .card-image.glam-5 { background: linear-gradient(135deg, rgba(244,114,182,0.3) 0%, rgba(251,191,36,0.3) 50%, rgba(192,132,252,0.3) 100%); }
 
         .card-title {
             font-size: 24px;
@@ -358,12 +453,27 @@
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
+            perspective: 1000px;
+            opacity: 0;
+            animation: slideUpIn 0.5s ease-out forwards;
+        }
+
+        @keyframes slideUpIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .thought-card:hover {
             background: rgba(74, 18, 89, 0.08);
             border-color: rgba(246, 153, 205, 0.3);
-            transform: translateY(-4px);
+            transform: translateY(-4px) perspective(1000px) rotateX(3deg);
+            box-shadow: 0 8px 24px rgba(74, 18, 89, 0.1);
         }
 
         .thought-text {
@@ -407,6 +517,11 @@
 
         .filter-btn:hover {
             border-color: rgba(246, 153, 205, 0.6);
+            transform: scale(1.05);
+        }
+
+        .filter-btn:active {
+            transform: scale(0.95);
         }
 
         .filter-btn.active {
@@ -481,68 +596,59 @@
 
         .bubble.bubble-jewelry {
             background:
-                /* Bright table center (the flat top of a diamond) */
-                radial-gradient(circle at 50% 46%,
-                    rgba(255,255,255,1) 0%,
-                    rgba(248,250,255,0.95) 10%,
-                    transparent 20%),
-                /* 8-fold facet pattern: alternating bright/dark like real diamond facets */
+                /* Bright glowing center */
+                radial-gradient(circle at 48% 44%, white 0%, rgba(255,255,255,0.7) 15%, transparent 30%),
+                /* Irregular facet pattern - NOT uniform segments */
                 conic-gradient(from 0deg at 50% 50%,
-                    #d8dde8 0deg, #f5f7ff 6deg, #fff 14deg, #c0c8d8 22deg, #8a95ad 30deg, #c0c8d8 38deg, #f2f5ff 45deg,
-                    #d8dde8 45deg, #f5f7ff 51deg, #fff 59deg, #c0c8d8 67deg, #8a95ad 75deg, #c0c8d8 83deg, #f2f5ff 90deg,
-                    #d8dde8 90deg, #f5f7ff 96deg, #fff 104deg, #c0c8d8 112deg, #8a95ad 120deg, #c0c8d8 128deg, #f2f5ff 135deg,
-                    #d8dde8 135deg, #f5f7ff 141deg, #fff 149deg, #c0c8d8 157deg, #8a95ad 165deg, #c0c8d8 173deg, #f2f5ff 180deg,
-                    #d8dde8 180deg, #f5f7ff 186deg, #fff 194deg, #c0c8d8 202deg, #8a95ad 210deg, #c0c8d8 218deg, #f2f5ff 225deg,
-                    #d8dde8 225deg, #f5f7ff 231deg, #fff 239deg, #c0c8d8 247deg, #8a95ad 255deg, #c0c8d8 263deg, #f2f5ff 270deg,
-                    #d8dde8 270deg, #f5f7ff 276deg, #fff 284deg, #c0c8d8 292deg, #8a95ad 300deg, #c0c8d8 308deg, #f2f5ff 315deg,
-                    #d8dde8 315deg, #f5f7ff 321deg, #fff 329deg, #c0c8d8 337deg, #8a95ad 345deg, #c0c8d8 353deg, #f2f5ff 360deg
-                ),
-                /* Depth: lighter center fading to darker edges like a real gem */
-                radial-gradient(circle at 50% 50%,
-                    #edf1ff 0%, #c8d0e0 55%, #a0adc5 80%, #8a95ad 100%);
-            border: 1.5px solid rgba(255,255,255,0.9);
+                    #fff 0deg, #e8edf8 15deg, #c5d0e5 25deg, #fff 40deg,
+                    #d0d8ea 55deg, #8a98b5 68deg, #c5d0e5 80deg, #fff 95deg,
+                    #e0e8f5 110deg, #b0bdd5 125deg, #fff 135deg, #d5dde8 150deg,
+                    #95a5c0 170deg, #c0cce0 185deg, #fff 200deg, #e5eaf5 215deg,
+                    #b5c2d8 230deg, #8a98b5 242deg, #d0d8ea 255deg, #fff 275deg,
+                    #e0e8f5 290deg, #c5d0e5 305deg, #fff 320deg, #b0bdd5 335deg,
+                    #d5dde8 350deg, #fff 360deg),
+                /* Depth gradient */
+                radial-gradient(circle, #e5eaf8 0%, #c0cce5 50%, #a5b5d0 100%);
+            border: 1px solid rgba(255,255,255,0.9);
             box-shadow:
-                0 0 25px rgba(255,255,255,0.5),
-                0 0 8px rgba(200,215,255,0.4),
-                inset 0 -4px 12px rgba(100,115,145,0.35),
-                inset 0 4px 10px rgba(255,255,255,0.6);
+                0 0 30px rgba(255,255,255,0.6),
+                0 0 60px rgba(200,220,255,0.3),
+                0 0 10px rgba(246,153,205,0.15),
+                inset 0 0 20px rgba(255,255,255,0.4);
             border-radius: 50%;
+            animation: diamondGlow 3s ease-in-out infinite;
         }
 
-        /* Diamond fire overlay: prismatic color flashes + specular highlight */
+        @keyframes diamondGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 60px rgba(200,220,255,0.3), 0 0 10px rgba(246,153,205,0.15), inset 0 0 20px rgba(255,255,255,0.4); }
+            50% { box-shadow: 0 0 40px rgba(255,255,255,0.8), 0 0 80px rgba(200,220,255,0.45), 0 0 15px rgba(246,153,205,0.25), inset 0 0 30px rgba(255,255,255,0.5); }
+        }
+
+        /* Diamond sparkle: rotating prismatic fire overlay */
         .bubble.bubble-jewelry::after {
             content: '';
             position: absolute;
             inset: 0;
             border-radius: 50%;
             background:
-                /* Bright specular highlight upper-left */
-                radial-gradient(circle at 35% 30%,
-                    rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.3) 15%, transparent 30%),
-                /* Small secondary highlight */
-                radial-gradient(circle at 65% 60%,
-                    rgba(255,255,255,0.4) 0%, transparent 15%),
-                /* Prismatic fire flashes, visible this time */
-                conic-gradient(from 30deg at 50% 50%,
-                    rgba(255,180,80,0.2) 0deg, transparent 18deg,
-                    rgba(80,160,255,0.25) 45deg, transparent 63deg,
-                    rgba(255,80,140,0.18) 90deg, transparent 108deg,
-                    rgba(80,255,180,0.2) 135deg, transparent 153deg,
-                    rgba(180,80,255,0.18) 180deg, transparent 198deg,
-                    rgba(255,180,80,0.2) 225deg, transparent 243deg,
-                    rgba(80,160,255,0.25) 270deg, transparent 288deg,
-                    rgba(255,80,140,0.18) 315deg, transparent 333deg,
-                    transparent 360deg
+                /* Rainbow prismatic colors with more saturation */
+                conic-gradient(from 0deg,
+                    rgba(255,200,100,0.25) 0deg,
+                    rgba(255,100,150,0.25) 60deg,
+                    rgba(150,100,255,0.25) 120deg,
+                    rgba(100,200,255,0.25) 180deg,
+                    rgba(100,255,200,0.25) 240deg,
+                    rgba(255,200,100,0.25) 360deg
                 );
             z-index: 1;
             pointer-events: none;
+            animation: diamondPrismaticRotate 8s linear infinite;
             mix-blend-mode: screen;
-            animation: diamondFacetRotate 8s linear infinite;
         }
 
-        @keyframes diamondFacetRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes diamondPrismaticRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .bubble::before {
@@ -589,6 +695,60 @@
             color: #ffd700;
         }
 
+        /* Pop Away animation for charms */
+        @keyframes popAway {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        .bubble.pop-away {
+            animation: popAway 0.4s ease-out forwards;
+        }
+
+        /* Glimmer Away animation for diamonds */
+        @keyframes shimmerDissolve {
+            0% {
+                opacity: 1;
+                filter: brightness(1);
+            }
+            50% {
+                filter: brightness(2) drop-shadow(0 0 20px rgba(255,255,255,0.8));
+            }
+            100% {
+                opacity: 0;
+                filter: brightness(1) drop-shadow(0 0 0px transparent);
+            }
+        }
+
+        .bubble.glimmer-away {
+            animation: shimmerDissolve 0.6s ease-out forwards;
+        }
+
+        /* Appear animation for new bubbles */
+        @keyframes bubbleAppear {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .bubble.appear {
+            animation: bubbleAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
         @keyframes float1 {
             0%, 100% { transform: translateY(0px) translateX(0px); }
             33% { transform: translateY(-20px) translateX(10px); }
@@ -618,7 +778,7 @@
         .bubble.float3 { animation: float3 12s ease-in-out infinite; }
         .bubble.float4 { animation: float4 14s ease-in-out infinite; }
 
-        /* ===== THINGS I BUY PAGE ===== */
+        /* ===== THINGS I BUY PAGE (MOODBOARD) ===== */
         .things-content {
             padding: 100px 40px 40px;
         }
@@ -635,6 +795,8 @@
             overflow: hidden;
             transition: all 0.3s ease;
             cursor: pointer;
+            opacity: 0;
+            animation: slideUpIn 0.6s ease-out forwards;
         }
 
         .item-image {
@@ -646,6 +808,7 @@
             justify-content: center;
             color: rgba(74, 18, 89, 0.25);
             font-size: 12px;
+            transition: all 0.3s ease;
         }
 
         .item-info {
@@ -653,6 +816,7 @@
             border: 1px solid rgba(74, 18, 89, 0.12);
             padding: 20px;
             border-top: none;
+            transition: all 0.3s ease;
         }
 
         .item-title {
@@ -668,7 +832,13 @@
         }
 
         .item-card:hover .item-image {
-            filter: brightness(1.1);
+            filter: brightness(1.15);
+            transform: scale(1.05);
+        }
+
+        .item-card:hover .item-info {
+            transform: translateY(-4px);
+            background: rgba(74, 18, 89, 0.12);
         }
 
         /* ===== RESEARCH PAGE ===== */
@@ -690,6 +860,12 @@
             overflow: hidden;
             max-width: 90%;
             word-break: break-word;
+            animation: subtleScroll 20s linear infinite;
+        }
+
+        @keyframes subtleScroll {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
         }
 
         .research-foreground {
@@ -711,6 +887,8 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
+            opacity: 0;
+            animation: slideUpIn 0.5s ease-out forwards;
         }
 
         .research-image {
@@ -722,6 +900,7 @@
             justify-content: center;
             color: rgba(74, 18, 89, 0.25);
             font-size: 12px;
+            transition: all 0.3s ease;
         }
 
         .research-info {
@@ -731,6 +910,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
         }
 
         .research-title {
@@ -745,6 +925,15 @@
             color: #F699CD;
             text-decoration: none;
             transition: color 0.3s ease;
+        }
+
+        .research-card:hover {
+            box-shadow: 0 8px 24px rgba(74, 18, 89, 0.15);
+            transform: translateY(-8px);
+        }
+
+        .research-card:hover .research-image {
+            filter: brightness(1.1);
         }
 
         .research-card:hover .research-link {
@@ -765,6 +954,7 @@
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
         }
 
         .modal-overlay.active {
@@ -780,7 +970,9 @@
             max-width: 500px;
             width: 90%;
             position: relative;
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.4s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes slideUp {
@@ -803,11 +995,19 @@
             color: #F699CD;
             font-size: 28px;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .modal-close:hover {
             color: #4A1259;
+            background: rgba(246, 153, 205, 0.1);
+            transform: rotate(90deg);
         }
 
         .modal-image {
@@ -861,6 +1061,11 @@
         .modal-button:hover {
             background: rgba(255, 215, 0, 0.3);
             border-color: rgba(255, 215, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        .modal-button:active {
+            transform: scale(0.98);
         }
 
         /* ===== BOTTOM CONTROLS ===== */
@@ -887,11 +1092,30 @@
             transition: all 0.3s ease;
             font-family: 'Quicksand', sans-serif;
             letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-button::after {
+            content: '↓';
+            position: absolute;
+            right: 10px;
+            animation: chevronBounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes chevronBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(4px); }
         }
 
         .scroll-button:hover {
             color: #4A1259;
             border-color: rgba(74, 18, 89, 0.25);
+            transform: scale(1.08);
+        }
+
+        .scroll-button:active {
+            transform: scale(0.96);
         }
 
         /* ===== MUSIC PLAYER ===== */
@@ -938,6 +1162,11 @@
 
         .player-btn:hover {
             background: rgba(246, 153, 205, 0.3);
+            transform: scale(1.1);
+        }
+
+        .player-btn:active {
+            transform: scale(0.9);
         }
 
         .player-btn svg {
@@ -967,6 +1196,12 @@
             border-radius: 50%;
             background: #F699CD;
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 8px rgba(246, 153, 205, 0.6);
         }
 
         .volume-slider::-moz-range-thumb {
@@ -976,6 +1211,12 @@
             background: #F699CD;
             cursor: pointer;
             border: none;
+            transition: all 0.2s ease;
+        }
+
+        .volume-slider::-moz-range-thumb:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 8px rgba(246, 153, 205, 0.6);
         }
 
         /* ===== THEME TOGGLE ===== */
@@ -999,6 +1240,11 @@
 
         .theme-toggle:hover {
             border-color: rgba(74, 18, 89, 0.25);
+            transform: scale(1.1) rotate(20deg);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
         }
 
         .theme-toggle svg {
@@ -1011,7 +1257,7 @@
         }
 
         .theme-toggle:hover svg {
-            stroke: #ffffff;
+            stroke: #4A1259;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -1032,22 +1278,22 @@
                 padding: 40px 20px 20px;
             }
 
-            .quote-section {
+            .home-page .quote-section {
                 padding: 40px 20px;
+            }
+
+            .home-page .quote-section::before {
+                font-size: 120px;
+                letter-spacing: 10px;
             }
 
             .quote-text {
                 font-size: 28px;
             }
 
-            .card-item {
-                min-width: 100%;
-                flex-direction: column;
-            }
-
-            .card-image {
-                width: 100%;
-                height: 250px;
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
 
             .card-number {
@@ -1069,13 +1315,18 @@
             .bottom-controls {
                 flex-direction: column;
                 gap: 20px;
+                bottom: 100px;
+            }
+
+            .cursor-trail {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
     <!-- ============================================
-         🎨 CUSTOMIZE YOUR SITE HERE - EASY EDIT ZONE
+         CUSTOMIZE YOUR SITE HERE - EASY EDIT ZONE
          ============================================ -->
     <script>
         // CONFIGURATION OBJECT - Edit these values to customize your site
@@ -1366,16 +1617,21 @@
         <div class="nav-bar" id="navBar"></div>
     </div>
 
+    <!-- MOUSE FOLLOW GLOW -->
+    <div class="mouse-glow" id="mouseGlow"></div>
+
     <!-- MAIN CONTAINER -->
     <div class="container">
         <!-- HOME PAGE -->
         <div class="page home-page active" id="homePage">
             <div class="quote-section">
+                <div class="quote-issue">Vol. 01 / 2026</div>
                 <div class="quote-text" id="homeQuote"></div>
+                <div class="quote-divider"></div>
                 <div class="quote-author" id="homeQuoteAuthor"></div>
             </div>
             <div class="home-content">
-                <div class="cards-scroll" id="cardsScroll"></div>
+                <div class="cards-grid" id="cardsScroll"></div>
             </div>
         </div>
 
@@ -1383,6 +1639,7 @@
         <div class="page thoughts-page" id="thoughtsPage">
             <div class="quote-section">
                 <div class="quote-text" id="thoughtsQuote"></div>
+                <div class="quote-divider"></div>
                 <div class="quote-author" id="thoughtsQuoteAuthor"></div>
             </div>
             <div class="thoughts-content">
@@ -1396,6 +1653,7 @@
         <div class="page moodboard-page" id="moodboardPage">
             <div class="quote-section">
                 <div class="quote-text" id="moodboardQuote"></div>
+                <div class="quote-divider"></div>
                 <div class="quote-author" id="moodboardQuoteAuthor"></div>
             </div>
             <div class="moodboard-content">
@@ -1410,6 +1668,7 @@
         <div class="page things-page" id="thingsPage">
             <div class="quote-section">
                 <div class="quote-text" id="thingsQuote"></div>
+                <div class="quote-divider"></div>
                 <div class="quote-author" id="thingsQuoteAuthor"></div>
             </div>
             <div class="things-content">
@@ -1423,6 +1682,7 @@
         <div class="page research-page" id="researchPage">
             <div class="quote-section">
                 <div class="quote-text" id="researchQuote"></div>
+                <div class="quote-divider"></div>
                 <div class="quote-author" id="researchQuoteAuthor"></div>
             </div>
             <div class="research-content">
@@ -1498,6 +1758,8 @@
             populateAllPages();
             setupEventListeners();
             loadBubblePositions();
+            initializeCustomCursor();
+            setupIntersectionObservers();
         }
 
         // ============================================
@@ -1507,6 +1769,55 @@
         function updateSiteInfo() {
             document.getElementById("siteName").textContent = CONFIG.siteName;
             document.getElementById("siteTagline").textContent = CONFIG.tagline;
+        }
+
+        // ============================================
+        // CUSTOM CURSOR TRAIL
+        // ============================================
+
+        function initializeCustomCursor() {
+            if (window.matchMedia('(pointer: coarse)').matches) {
+                return; // Don't use custom cursor on touch devices
+            }
+
+            let trailPositions = [];
+            const mouseGlow = document.getElementById("mouseGlow");
+
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX;
+                const y = e.clientY;
+
+                // Update glow follow
+                mouseGlow.style.left = (x - 100) + 'px';
+                mouseGlow.style.top = (y - 100) + 'px';
+            });
+        }
+
+        // ============================================
+        // INTERSECTION OBSERVER FOR ANIMATIONS
+        // ============================================
+
+        function setupIntersectionObservers() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe card items on home page
+            document.querySelectorAll('.card-item').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Thought cards and other elements already have staggered animations via CSS
         }
 
         // ============================================
@@ -1535,7 +1846,7 @@
         }
 
         function switchPage(pageName) {
-            // Hide all pages
+            // Fade out old page
             document.querySelectorAll(".page").forEach((page) => {
                 page.classList.remove("active");
             });
@@ -1549,7 +1860,7 @@
                 }
             });
 
-            // Show selected page
+            // Show selected page with fade in
             const pageMap = {
                 Home: "homePage",
                 Thoughts: "thoughtsPage",
@@ -1560,8 +1871,35 @@
 
             const pageId = pageMap[pageName];
             if (pageId) {
-                document.getElementById(pageId).classList.add("active");
+                const pageEl = document.getElementById(pageId);
+                pageEl.classList.add("active");
                 currentPage = pageName;
+
+                // Reinitialize observers on new page
+                setupIntersectionObservers();
+
+                // Add stagger delay to thought cards on thoughts page
+                if (pageName === "Thoughts") {
+                    document.querySelectorAll(".thought-card").forEach((card, index) => {
+                        card.style.animationDelay = (index * 0.08) + 's';
+                    });
+                }
+
+                // Add stagger delay to item cards on things page
+                if (pageName === "Moodboard") {
+                    document.querySelectorAll(".item-card").forEach((card, index) => {
+                        card.style.animationDelay = (index * 0.08) + 's';
+                    });
+                }
+
+                // Add stagger delay to research cards
+                if (pageName === "Research") {
+                    document.querySelectorAll(".research-card").forEach((card, index) => {
+                        card.style.animationDelay = (index * 0.08) + 's';
+                    });
+                }
+
+                window.scrollTo(0, 0);
             }
         }
 
@@ -1579,8 +1917,11 @@
         }
 
         function populateQuotes() {
-            // Home quote
-            document.getElementById("homeQuote").textContent = CONFIG.quotes.home.text;
+            // Home quote - with word reveal animation
+            const homeQuoteEl = document.getElementById("homeQuote");
+            homeQuoteEl.innerHTML = CONFIG.quotes.home.text.split(' ').map((word, index) => {
+                return `<span class="quote-word" style="animation-delay: ${index * 0.1}s">${word}</span>`;
+            }).join(' ');
             document.getElementById("homeQuoteAuthor").textContent = CONFIG.quotes.home.author;
 
             // Thoughts quote
@@ -1601,8 +1942,8 @@
         }
 
         function populateHomeCard() {
-            const cardsScroll = document.getElementById("cardsScroll");
-            cardsScroll.innerHTML = "";
+            const cardsGrid = document.getElementById("cardsScroll");
+            cardsGrid.innerHTML = "";
 
             CONFIG.homeCards.forEach((card, index) => {
                 const glamClass = "glam-" + ((index % 5) + 1);
@@ -1616,34 +1957,40 @@
                         <div class="card-subtitle">${card.subtitle}</div>
                     </div>
                 `;
-                cardsScroll.appendChild(cardItem);
+                cardsGrid.appendChild(cardItem);
             });
 
             // Add sparkle elements to home page quote section for 80s glam
             const homeQuoteSection = document.querySelector(".home-page .quote-section");
             if (homeQuoteSection) {
-                for (let i = 0; i < 15; i++) {
+                for (let i = 0; i < 25; i++) {
                     const sparkle = document.createElement("div");
-                    sparkle.className = "sparkle";
+                    sparkle.className = "sparkle" + (Math.random() > 0.7 ? " gold" : "");
                     sparkle.style.left = Math.random() * 100 + "%";
                     sparkle.style.top = Math.random() * 100 + "%";
                     sparkle.style.animationDelay = (Math.random() * 4) + "s";
                     sparkle.style.animationDuration = (2 + Math.random() * 3) + "s";
-                    sparkle.style.width = (2 + Math.random() * 4) + "px";
+                    sparkle.style.width = (2 + Math.random() * 6) + "px";
                     sparkle.style.height = sparkle.style.width;
                     homeQuoteSection.appendChild(sparkle);
                 }
             }
+
+            // Set up intersection observer for cards after a brief delay
+            setTimeout(() => {
+                setupIntersectionObservers();
+            }, 100);
         }
 
         function populateThoughtsPage() {
             const thoughtsGrid = document.getElementById("thoughtsGrid");
             thoughtsGrid.innerHTML = "";
 
-            CONFIG.thoughts.forEach((thought) => {
+            CONFIG.thoughts.forEach((thought, index) => {
                 const card = document.createElement("div");
                 card.className = "thought-card";
                 card.innerHTML = `<div class="thought-text">"${thought}"</div>`;
+                card.style.animationDelay = (index * 0.08) + 's';
                 thoughtsGrid.appendChild(card);
             });
         }
@@ -1703,14 +2050,38 @@
                 }
             });
 
-            // Filter bubbles
+            // Filter bubbles with animation
             bubbles.forEach(bubble => {
-                if (category === "all") {
-                    bubble.classList.remove("hidden");
-                } else if (bubble.getAttribute("data-category") === category) {
-                    bubble.classList.remove("hidden");
+                const isCharm = bubble.getAttribute("data-category") === "nail-charm";
+                const isJewelry = bubble.getAttribute("data-category") === "jewelry";
+                const shouldShow = category === "all" || (category === "nail-charm" && isCharm) || (category === "jewelry" && isJewelry);
+
+                if (shouldShow) {
+                    if (bubble.classList.contains("hidden")) {
+                        bubble.classList.remove("hidden");
+                        bubble.classList.remove("pop-away", "glimmer-away");
+                        bubble.classList.add("appear");
+
+                        // Remove appear class after animation
+                        setTimeout(() => {
+                            bubble.classList.remove("appear");
+                        }, 500);
+                    }
                 } else {
-                    bubble.classList.add("hidden");
+                    if (!bubble.classList.contains("hidden")) {
+                        // Add exit animation based on type
+                        if (isCharm) {
+                            bubble.classList.add("pop-away");
+                        } else {
+                            bubble.classList.add("glimmer-away");
+                        }
+
+                        // Hide after animation completes
+                        setTimeout(() => {
+                            bubble.classList.add("hidden");
+                            bubble.classList.remove("pop-away", "glimmer-away");
+                        }, isCharm ? 400 : 600);
+                    }
                 }
             });
         }
@@ -1719,9 +2090,10 @@
             const thingsGrid = document.getElementById("thingsGrid");
             thingsGrid.innerHTML = "";
 
-            CONFIG.thingsItems.forEach((item) => {
+            CONFIG.thingsItems.forEach((item, index) => {
                 const card = document.createElement("div");
                 card.className = "item-card";
+                card.style.animationDelay = (index * 0.08) + 's';
                 card.innerHTML = `
                     <div class="item-image">Curated Item</div>
                     <div class="item-info">
@@ -1737,11 +2109,12 @@
             const researchGrid = document.getElementById("researchGrid");
             researchGrid.innerHTML = "";
 
-            CONFIG.researchItems.forEach((item) => {
+            CONFIG.researchItems.forEach((item, index) => {
                 const card = document.createElement("a");
                 card.href = item.link;
                 card.target = "_blank";
                 card.className = "research-card";
+                card.style.animationDelay = (index * 0.08) + 's';
                 card.innerHTML = `
                     <div class="research-image">Research Resource</div>
                     <div class="research-info">
@@ -1759,6 +2132,7 @@
 
         function loadBubblePositions() {
             const container = document.getElementById("bubblesContainer");
+            if (!container) return;
             const bubbles = container.querySelectorAll(".bubble");
 
             // Predefined positions and sizes for a nice scattered layout
@@ -1786,8 +2160,6 @@
                 bubble.style.top = pos.y;
                 bubble.style.width = pos.size + "px";
                 bubble.style.height = pos.size + "px";
-                // Background is handled by CSS classes (bubble-charm / bubble-jewelry)
-                // Do NOT set inline background here
             });
 
             // Initialize bubble physics
