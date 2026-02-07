@@ -689,39 +689,105 @@
             color: #ffd700;
         }
 
-        /* Pop Away animation for charms */
+        /* Pop Away: soap bubble wobble then BURST */
         @keyframes popAway {
             0% {
                 transform: scale(1);
                 opacity: 1;
+                box-shadow: 0 4px 20px rgba(74,18,89,0.2);
+            }
+            15% {
+                transform: scale(1.2) rotate(2deg);
+                opacity: 1;
+            }
+            30% {
+                transform: scale(0.92) rotate(-2deg);
+                opacity: 0.95;
+            }
+            45% {
+                transform: scale(1.18) rotate(1deg);
+                border-width: 3px;
+                opacity: 0.85;
+            }
+            60% {
+                transform: scale(1.3);
+                opacity: 0.6;
+                box-shadow:
+                    -18px -18px 0 3px rgba(255,180,210,0.7),
+                    20px -14px 0 2px rgba(180,210,255,0.6),
+                    -14px 20px 0 2.5px rgba(210,255,220,0.6),
+                    16px 16px 0 2px rgba(255,220,180,0.5),
+                    0px -22px 0 1.5px rgba(255,180,230,0.5),
+                    -22px 0px 0 2px rgba(180,220,255,0.5);
             }
             100% {
                 transform: scale(0);
                 opacity: 0;
+                box-shadow:
+                    -40px -40px 0 0 rgba(255,180,210,0),
+                    44px -30px 0 0 rgba(180,210,255,0),
+                    -30px 44px 0 0 rgba(210,255,220,0),
+                    36px 36px 0 0 rgba(255,220,180,0),
+                    0px -48px 0 0 rgba(255,180,230,0),
+                    -48px 0px 0 0 rgba(180,220,255,0);
             }
         }
 
         .bubble.pop-away {
-            animation: popAway 0.4s ease-out forwards !important;
+            animation: popAway 0.55s cubic-bezier(0.25, 0.8, 0.25, 1) forwards !important;
         }
 
-        /* Glimmer Away animation for diamonds */
-        @keyframes shimmerDissolve {
+        /* Glimmer Away: diamond catches light, sparkle points burst out, dissolves */
+        @keyframes glimmerAway {
             0% {
+                transform: scale(1);
                 opacity: 1;
                 filter: brightness(1);
+                box-shadow: 0 0 30px rgba(255,255,255,0.6);
+            }
+            20% {
+                transform: scale(1.08);
+                filter: brightness(2.5);
+                box-shadow:
+                    0 0 50px rgba(255,255,255,0.9),
+                    -12px -14px 0 2px rgba(255,255,255,0.9),
+                    14px -10px 0 1.5px rgba(200,230,255,0.8),
+                    -10px 14px 0 2px rgba(255,220,255,0.7),
+                    12px 12px 0 1.5px rgba(220,240,255,0.8),
+                    0px -16px 0 1px rgba(255,255,255,0.7);
             }
             50% {
-                filter: brightness(2) drop-shadow(0 0 20px rgba(255,255,255,0.8));
+                transform: scale(1.12);
+                filter: brightness(3.5);
+                opacity: 0.8;
+                box-shadow:
+                    0 0 70px rgba(255,255,255,0.8),
+                    -28px -30px 0 1.5px rgba(255,255,255,0.7),
+                    30px -22px 0 1px rgba(200,230,255,0.6),
+                    -22px 30px 0 1.5px rgba(255,220,255,0.5),
+                    26px 26px 0 1px rgba(220,240,255,0.6),
+                    0px -34px 0 0.5px rgba(255,255,255,0.5),
+                    -34px 0px 0 1px rgba(200,220,255,0.4),
+                    34px 0px 0 0.5px rgba(255,240,255,0.4);
             }
             100% {
+                transform: scale(0.6);
                 opacity: 0;
-                filter: brightness(1) drop-shadow(0 0 0px transparent);
+                filter: brightness(5);
+                box-shadow:
+                    0 0 0 rgba(255,255,255,0),
+                    -55px -55px 0 0 rgba(255,255,255,0),
+                    55px -45px 0 0 rgba(200,230,255,0),
+                    -45px 55px 0 0 rgba(255,220,255,0),
+                    50px 50px 0 0 rgba(220,240,255,0),
+                    0px -60px 0 0 rgba(255,255,255,0),
+                    -60px 0px 0 0 rgba(200,220,255,0),
+                    60px 0px 0 0 rgba(255,240,255,0);
             }
         }
 
         .bubble.glimmer-away {
-            animation: shimmerDissolve 0.6s ease-out forwards !important;
+            animation: glimmerAway 0.7s ease-out forwards !important;
         }
 
         /* Appear animation for new bubbles */
@@ -2070,11 +2136,11 @@
                             bubble.classList.add("glimmer-away");
                         }
 
-                        // Hide after animation completes
+                        // Hide after animation completes (match new durations)
                         setTimeout(() => {
                             bubble.classList.add("hidden");
                             bubble.classList.remove("pop-away", "glimmer-away");
-                        }, isCharm ? 400 : 600);
+                        }, isCharm ? 550 : 700);
                     }
                 }
             });
@@ -2133,141 +2199,157 @@
             const cy = size / 2;
             const outerR = size * 0.48;
 
-            // Clip to circle
             ctx.beginPath();
             ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
             ctx.clip();
 
-            // Fill dark base
-            ctx.fillStyle = '#0d1628';
+            ctx.fillStyle = '#0a1020';
             ctx.fillRect(0, 0, size, size);
 
-            function polar(angleDeg, r) {
-                const rad = angleDeg * Math.PI / 180;
+            function polar(deg, r) {
+                const rad = deg * Math.PI / 180;
                 return [cx + r * Math.cos(rad), cy - r * Math.sin(rad)];
             }
 
-            function drawPoly(points, color) {
+            function centroid(pts) {
+                let x = 0, y = 0;
+                pts.forEach(p => { x += p[0]; y += p[1]; });
+                return [x / pts.length, y / pts.length];
+            }
+
+            // Draw facet with LINEAR GRADIENT fill for 3D depth illusion
+            function drawFacet(points, col1, col2, lightDeg) {
                 ctx.beginPath();
                 ctx.moveTo(points[0][0], points[0][1]);
-                for (let i = 1; i < points.length; i++) {
-                    ctx.lineTo(points[i][0], points[i][1]);
-                }
+                for (let i = 1; i < points.length; i++) ctx.lineTo(points[i][0], points[i][1]);
                 ctx.closePath();
-                ctx.fillStyle = color;
+
+                const c = centroid(points);
+                const len = size * 0.12;
+                const rad = lightDeg * Math.PI / 180;
+                const grad = ctx.createLinearGradient(
+                    c[0] - len * Math.cos(rad), c[1] - len * Math.sin(rad),
+                    c[0] + len * Math.cos(rad), c[1] + len * Math.sin(rad)
+                );
+                grad.addColorStop(0, col1);
+                grad.addColorStop(1, col2);
+                ctx.fillStyle = grad;
                 ctx.fill();
-                ctx.strokeStyle = 'rgba(200,215,240,0.12)';
-                ctx.lineWidth = 0.5;
+                ctx.strokeStyle = 'rgba(190,210,240,0.1)';
+                ctx.lineWidth = 0.4;
                 ctx.stroke();
             }
 
-            // Concentric ring radii
-            const tableR = size * 0.14;
-            const starR = size * 0.28;
-            const bezelR = size * 0.38;
+            // Ring radii
+            const tableR = size * 0.13;
+            const starR = size * 0.27;
+            const bezelR = size * 0.37;
             const girdleR = outerR;
 
-            // Generate ring points
-            function ringPoints(n, r, offsetDeg) {
+            function ring(n, r, off) {
                 const pts = [];
-                for (let i = 0; i < n; i++) pts.push(polar(offsetDeg + i * (360 / n), r));
+                for (let i = 0; i < n; i++) pts.push(polar(off + i * (360 / n), r));
                 return pts;
             }
 
-            const tPts = ringPoints(8, tableR, 0);         // table vertices
-            const sPts = ringPoints(8, starR, 22.5);        // star tips (offset 22.5)
-            const bPts = ringPoints(16, bezelR, 0);          // bezel midpoints
-            const gPts = ringPoints(16, girdleR, 11.25);    // girdle points
+            const T = ring(8, tableR, 0);
+            const S = ring(8, starR, 22.5);
+            const B = ring(16, bezelR, 0);
+            const G = ring(16, girdleR, 11.25);
 
-            // Facet colors: realistic diamond contrast
-            const dark = ['#080e20','#0a1228','#0c1530','#0e1832','#091125','#0b1329'];
-            const bright = ['#eaf0ff','#f5f8ff','#ffffff','#e0eafc','#f0f5ff','#dce8fa','#ffffff','#e8f0ff'];
-            const mid = ['#7a8caa','#8898b5','#95a8c5','#6d80a0','#a0b2cc','#8595b0'];
-            const iceBlue = ['#c5d5ef','#b8cce8','#d0ddf0','#afc2e0','#c0d0eb'];
+            // Color pairs for gradient facets [lightSide, darkSide]
+            const darkPair = [['#060c1c','#10192e'],['#080e20','#121d38'],['#0a1125','#0e1830'],['#070d1e','#111a32']];
+            const brightPair = [['#f8fbff','#d8e4f5'],['#ffffff','#e0ecfa'],['#f0f6ff','#c8d8ee'],['#ffffff','#d5e2f2']];
+            const midPair = [['#a8b8d0','#6a7e9e'],['#b5c5dc','#7888a5'],['#9dafc8','#5d7090'],['#c0cee2','#8595ae']];
+            const icePair = [['#dce8f8','#a0b8d5'],['#d0e0f2','#95aece'],['#e2ecfa','#b0c5e0'],['#c8daf0','#8aa5c5']];
 
-            // Draw table (center octagon) - bright white/ice
-            drawPoly(tPts, '#e8f0ff');
-
-            // Star facets: 8 triangles from table edges to star tips
+            // STAR FACETS: 8 triangles from table to star tips
             for (let i = 0; i < 8; i++) {
-                const t1 = tPts[i];
-                const t2 = tPts[(i + 1) % 8];
-                const s = sPts[i];
-                // Alternate: dark arrows and bright facets
-                const color = (i % 2 === 0)
-                    ? dark[i % dark.length]
-                    : bright[i % bright.length];
-                drawPoly([t1, t2, s], color);
+                const pts = [T[i], T[(i + 1) % 8], S[i]];
+                const lightAng = i * 45 + 22.5;
+                if (i % 2 === 0) {
+                    drawFacet(pts, darkPair[i % 4][0], darkPair[i % 4][1], lightAng);
+                } else {
+                    drawFacet(pts, brightPair[i % 4][0], brightPair[i % 4][1], lightAng + 90);
+                }
             }
 
-            // Crown/bezel facets: kite shapes from star tips to bezel ring
+            // BEZEL FACETS: kite halves from star tips to bezel ring
             for (let i = 0; i < 8; i++) {
-                const s = sPts[i];
-                const b1 = bPts[i * 2];       // bezel point at table vertex angle
-                const b2 = bPts[i * 2 + 1];   // bezel point at star tip angle
-                const b3 = bPts[(i * 2 + 2) % 16]; // next bezel point
+                const s = S[i];
+                const b1 = B[i * 2];
+                const b2 = B[i * 2 + 1];
+                const b3 = B[(i * 2 + 2) % 16];
+                const ang = i * 45;
 
-                // Left kite half
-                const colA = (i % 2 === 0)
-                    ? bright[(i + 2) % bright.length]
-                    : mid[i % mid.length];
-                drawPoly([tPts[i], s, b2, b1], colA);
-
-                // Right kite half
-                const colB = (i % 2 === 0)
-                    ? iceBlue[i % iceBlue.length]
-                    : bright[(i + 3) % bright.length];
-                drawPoly([tPts[(i + 1) % 8], s, b2, b3], colB);
+                // Left half-kite
+                if (i % 2 === 0) {
+                    drawFacet([T[i], s, b2, b1], brightPair[(i+1) % 4][0], brightPair[(i+1) % 4][1], ang + 60);
+                } else {
+                    drawFacet([T[i], s, b2, b1], midPair[i % 4][0], midPair[i % 4][1], ang + 30);
+                }
+                // Right half-kite
+                if (i % 2 === 0) {
+                    drawFacet([T[(i+1)%8], s, b2, b3], icePair[i % 4][0], icePair[i % 4][1], ang + 120);
+                } else {
+                    drawFacet([T[(i+1)%8], s, b2, b3], brightPair[(i+2) % 4][0], brightPair[(i+2) % 4][1], ang + 150);
+                }
             }
 
-            // Upper girdle facets: thin triangles from bezel to girdle
+            // GIRDLE FACETS: 32 thin triangles at the outer ring
             for (let i = 0; i < 16; i++) {
-                const bp = bPts[i];
-                const g1 = gPts[i];
-                const g2 = gPts[(i + 1) % 16];
+                const bp = B[i];
+                const g1 = G[i];
+                const g2 = G[(i + 1) % 16];
+                const bp2 = B[(i + 1) % 16];
+                const ang = i * 22.5;
 
-                const color = (i % 3 === 0)
-                    ? dark[i % dark.length]
-                    : (i % 3 === 1)
-                        ? bright[i % bright.length]
-                        : mid[i % mid.length];
-                drawPoly([bp, g1, g2], color);
+                // Outer triangle
+                const outerPairs = [darkPair, brightPair, midPair, icePair, brightPair, darkPair];
+                const pi = i % 6;
+                drawFacet([bp, g1, g2], outerPairs[pi][i % 4][0], outerPairs[pi][i % 4][1], ang + 45);
 
-                // Fill between girdle points and next bezel
-                const bp2 = bPts[(i + 1) % 16];
-                const col2 = (i % 3 === 0)
-                    ? bright[(i + 1) % bright.length]
-                    : (i % 3 === 1)
-                        ? iceBlue[i % iceBlue.length]
-                        : dark[(i + 1) % dark.length];
-                drawPoly([bp, bp2, g2], col2);
+                // Inner triangle
+                const innerPairs = [brightPair, icePair, darkPair, brightPair, midPair, icePair];
+                drawFacet([bp, bp2, g2], innerPairs[pi][i % 4][0], innerPairs[pi][i % 4][1], ang + 135);
             }
 
-            // Redraw table on top (brighter, clean)
-            drawPoly(tPts, 'rgba(235, 242, 255, 0.85)');
-
-            // Specular highlight (upper-left bright spot)
-            const specGrad = ctx.createRadialGradient(
-                cx - size * 0.1, cy - size * 0.1, 0,
-                cx, cy, outerR
-            );
-            specGrad.addColorStop(0, 'rgba(255,255,255,0.35)');
-            specGrad.addColorStop(0.2, 'rgba(255,255,255,0.12)');
-            specGrad.addColorStop(0.5, 'transparent');
-            ctx.fillStyle = specGrad;
+            // TABLE (center octagon) with radial gradient for dome effect
             ctx.beginPath();
-            ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+            ctx.moveTo(T[0][0], T[0][1]);
+            for (let i = 1; i < 8; i++) ctx.lineTo(T[i][0], T[i][1]);
+            ctx.closePath();
+            const tableGrad = ctx.createRadialGradient(cx - size*0.02, cy - size*0.02, 0, cx, cy, tableR);
+            tableGrad.addColorStop(0, 'rgba(255,255,255,0.95)');
+            tableGrad.addColorStop(0.5, 'rgba(225,235,252,0.85)');
+            tableGrad.addColorStop(1, 'rgba(200,218,245,0.75)');
+            ctx.fillStyle = tableGrad;
             ctx.fill();
+
+            // SPECULAR HIGHLIGHTS: two bright spots for realism
+            const spec1 = ctx.createRadialGradient(cx - size*0.12, cy - size*0.1, 0, cx - size*0.08, cy - size*0.06, size*0.2);
+            spec1.addColorStop(0, 'rgba(255,255,255,0.45)');
+            spec1.addColorStop(0.4, 'rgba(255,255,255,0.12)');
+            spec1.addColorStop(1, 'transparent');
+            ctx.fillStyle = spec1;
+            ctx.beginPath(); ctx.arc(cx, cy, outerR, 0, Math.PI * 2); ctx.fill();
+
+            const spec2 = ctx.createRadialGradient(cx + size*0.1, cy + size*0.08, 0, cx + size*0.06, cy + size*0.05, size*0.12);
+            spec2.addColorStop(0, 'rgba(255,255,255,0.25)');
+            spec2.addColorStop(0.5, 'rgba(255,255,255,0.06)');
+            spec2.addColorStop(1, 'transparent');
+            ctx.fillStyle = spec2;
+            ctx.beginPath(); ctx.arc(cx, cy, outerR, 0, Math.PI * 2); ctx.fill();
 
             return canvas.toDataURL();
         }
 
-        // Cache the diamond pattern
+        // Cache the diamond pattern (high-res for quality)
         let diamondPatternURL = null;
 
         function getDiamondPattern() {
             if (!diamondPatternURL) {
-                diamondPatternURL = createDiamondPattern(300);
+                diamondPatternURL = createDiamondPattern(400);
             }
             return diamondPatternURL;
         }
