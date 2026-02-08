@@ -12,6 +12,71 @@
             box-sizing: border-box;
         }
 
+        /* ===== LOADING SCREEN ===== */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #ffe9eb;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 300;
+            color: #8c4f5a;
+            letter-spacing: -0.01em;
+            margin-bottom: 24px;
+            animation: loadingFadeIn 0.8s ease-out;
+        }
+
+        .loading-bar {
+            width: 120px;
+            height: 2px;
+            background: rgba(245, 193, 197, 0.3);
+            border-radius: 2px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .loading-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #efb0b7, #db7c87);
+            border-radius: 2px;
+            animation: loadingProgress 1.2s ease-in-out forwards;
+        }
+
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            60% { width: 80%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes loadingFadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        body.dark-mode .loading-screen { background: #2a1a1d; }
+        body.dark-mode .loading-name { color: #fcd9dc; }
+        body.dark-mode .loading-bar { background: rgba(219, 124, 135, 0.15); }
+
+
         body {
             background-color: #ffe9eb;
             color: #8c4f5a;
@@ -319,7 +384,7 @@
             font-size: clamp(36px, 5vw, 60px);
             font-weight: 300;
             color: #8c4f5a;
-            max-width: 900px;
+            max-width: 800px;
             line-height: 1.3;
             letter-spacing: -0.02em;
             font-style: italic;
@@ -341,7 +406,7 @@
 
         /* ===== HOME PAGE - MAGAZINE GRID ===== */
         .home-content {
-            padding: 120px 60px 40px;
+            padding: 120px 80px 40px;
             position: relative;
             z-index: 1;
         }
@@ -467,7 +532,7 @@
         }
 
         .thoughts-content {
-            padding: 120px 60px 40px;
+            padding: 120px 80px 40px;
         }
 
         .thoughts-grid {
@@ -525,7 +590,7 @@
 
         /* ===== MOODBOARD PAGE (SHOP) ===== */
         .moodboard-content {
-            padding: 120px 60px 40px;
+            padding: 120px 80px 40px;
             position: relative;
             min-height: 100vh;
         }
@@ -918,7 +983,7 @@
 
         /* ===== THINGS I BUY PAGE (MOODBOARD) ===== */
         .things-content {
-            padding: 120px 60px 40px;
+            padding: 120px 80px 40px;
         }
 
         .items-grid {
@@ -981,7 +1046,7 @@
 
         /* ===== RESEARCH PAGE ===== */
         .research-content {
-            padding: 120px 60px 40px;
+            padding: 120px 80px 40px;
             position: relative;
         }
 
@@ -1398,6 +1463,175 @@
             stroke: #8c4f5a;
         }
 
+        /* ===== FOOTER ===== */
+        .site-footer {
+            padding: 80px 80px 40px;
+            text-align: center;
+            position: relative;
+            border-top: 1px solid rgba(245, 193, 197, 0.3);
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-brand {
+            margin-bottom: 32px;
+        }
+
+        .footer-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 300;
+            color: #8c4f5a;
+            letter-spacing: -0.01em;
+            margin-bottom: 4px;
+        }
+
+        .footer-tagline {
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #efb0b7;
+            font-weight: 500;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            font-size: 12px;
+            color: #db7c87;
+            text-decoration: none;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #db7c87;
+            transition: width 0.3s ease;
+        }
+
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        .footer-link:hover {
+            color: #8c4f5a;
+        }
+
+        .footer-divider {
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #f5c1c5, transparent);
+            margin: 0 auto 24px;
+        }
+
+        .footer-bottom {
+            padding-bottom: 20px;
+        }
+
+        .footer-copy {
+            font-size: 11px;
+            color: #efb0b7;
+            letter-spacing: 0.03em;
+        }
+
+        body.dark-mode .site-footer { border-top-color: rgba(219, 124, 135, 0.15); }
+        body.dark-mode .footer-name { color: #fcd9dc; }
+        body.dark-mode .footer-link { color: #efb0b7; }
+        body.dark-mode .footer-link:hover { color: #fcd9dc; }
+        body.dark-mode .footer-divider { background: linear-gradient(90deg, transparent, rgba(219,124,135,0.3), transparent); }
+
+        /* ===== DARK MODE ===== */
+        body.dark-mode {
+            background-color: #2a1a1d;
+            color: #f5c1c5;
+        }
+
+        body.dark-mode .site-name { color: #f5c1c5; }
+        body.dark-mode .site-logo {
+            background: rgba(42, 26, 29, 0.8);
+            border-color: rgba(219, 124, 135, 0.2);
+        }
+        body.dark-mode .nav-bar {
+            background: rgba(42, 26, 29, 0.8);
+            border-color: rgba(219, 124, 135, 0.15);
+        }
+        body.dark-mode .nav-btn { color: #efb0b7; }
+        body.dark-mode .nav-btn.active {
+            background: rgba(219, 124, 135, 0.2);
+            color: #fcd9dc;
+        }
+        body.dark-mode .quote-text { color: #fcd9dc; }
+        body.dark-mode .page-title { color: #fcd9dc; }
+        body.dark-mode .thought-text { color: #f5c1c5; }
+        body.dark-mode .thought-card {
+            background: rgba(60, 35, 40, 0.6);
+            border-color: rgba(219, 124, 135, 0.15);
+        }
+        body.dark-mode .thought-card:hover {
+            background: rgba(70, 42, 48, 0.8);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+        body.dark-mode .card-image {
+            background-color: rgba(60, 35, 40, 0.4);
+            border-color: rgba(219, 124, 135, 0.15);
+        }
+        body.dark-mode .item-info,
+        body.dark-mode .research-info {
+            background: rgba(60, 35, 40, 0.5);
+            border-color: rgba(219, 124, 135, 0.12);
+        }
+        body.dark-mode .modal {
+            background: #3a2328;
+            border-color: rgba(219, 124, 135, 0.15);
+        }
+        body.dark-mode .modal-name { color: #fcd9dc; }
+        body.dark-mode .filter-btn {
+            background: rgba(60, 35, 40, 0.6);
+            border-color: rgba(219, 124, 135, 0.2);
+            color: #f5c1c5;
+        }
+        body.dark-mode .filter-btn:hover {
+            background: rgba(70, 42, 48, 0.8);
+        }
+        body.dark-mode .scroll-button,
+        body.dark-mode .music-player,
+        body.dark-mode .theme-toggle {
+            background: rgba(42, 26, 29, 0.8);
+            border-color: rgba(219, 124, 135, 0.15);
+        }
+        body.dark-mode .item-title,
+        body.dark-mode .research-title,
+        body.dark-mode .card-title { color: #fcd9dc; }
+        body.dark-mode .mouse-glow {
+            background: radial-gradient(circle, rgba(219, 124, 135, 0.15), transparent);
+        }
+        body.dark-mode .home-page .quote-section::before {
+            color: rgba(219, 124, 135, 0.06);
+        }
+        body.dark-mode .home-page .quote-section::after {
+            background: radial-gradient(circle, rgba(219,124,135,0.15) 0%, rgba(219,124,135,0.05) 30%, transparent 70%);
+        }
+        body.dark-mode .bubble { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
+        body.dark-mode .research-card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .header, .nav-container {
@@ -1413,11 +1647,11 @@
             }
 
             .home-content, .thoughts-content, .things-content, .research-content, .moodboard-content {
-                padding: 40px 28px 20px;
+                padding: 40px 32px 20px;
             }
 
             .home-page .quote-section {
-                padding: 40px 28px;
+                padding: 40px 32px;
             }
 
             .home-page .quote-section::before {
@@ -1741,6 +1975,15 @@
             ]
         };
     </script>
+    <!-- LOADING SCREEN -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-name">Kitty's Space</div>
+            <div class="loading-bar"><div class="loading-fill"></div></div>
+        </div>
+    </div>
+
+
 
     <!-- HEADER -->
     <div class="header">
@@ -1834,6 +2077,27 @@
         </div>
     </div>
 
+
+    <!-- FOOTER -->
+    <footer class="site-footer" id="siteFooter">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-name">Kitty's Space</div>
+                <div class="footer-tagline">nail charms & jewelry</div>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Instagram</a>
+                <a href="#" class="footer-link">TikTok</a>
+                <a href="#" class="footer-link">Pinterest</a>
+                <a href="#" class="footer-link">Contact</a>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <span class="footer-copy">&copy; 2026 Kitty's Space. Made with love.</span>
+            </div>
+        </div>
+    </footer>
+
     <!-- MODAL -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" id="productModal">
@@ -1887,7 +2151,7 @@
         // ============================================
 
         let currentPage = "Home";
-        let isDarkMode = true;
+        let isDarkMode = false;
 
         // Initialize the site
         function initializeSite() {
@@ -1898,6 +2162,7 @@
             loadBubblePositions();
             initializeCustomCursor();
             setupIntersectionObservers();
+                    initParallax();
         }
 
         // ============================================
@@ -2676,20 +2941,8 @@
         // ============================================
 
         function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            const root = document.documentElement;
-
-            if (isDarkMode) {
-                root.style.setProperty("--bg-color", "#2A0E35");
-                root.style.setProperty("--text-color", "#ffe9eb");
-                document.body.style.backgroundColor = "#2A0E35";
-                document.body.style.color = "#ffe9eb";
-            } else {
-                root.style.setProperty("--bg-color", "#ffe9eb");
-                root.style.setProperty("--text-color", "#8c4f5a");
-                document.body.style.backgroundColor = "#ffe9eb";
-                document.body.style.color = "#8c4f5a";
-            }
+            document.body.classList.toggle('dark-mode');
+            isDarkMode = document.body.classList.contains('dark-mode');
         }
 
         // ============================================
@@ -2771,10 +3024,48 @@
         }
 
         // ============================================
+        // PARALLAX EFFECT ON HOME QUOTE
+        // ============================================
+
+        function initParallax() {
+            const quoteSection = document.querySelector('.home-page .quote-section');
+            if (!quoteSection) return;
+            
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const speed = 0.3;
+                const quoteText = quoteSection.querySelector('.quote-text');
+                const quoteAuthor = quoteSection.querySelector('.quote-author');
+                const quoteDivider = quoteSection.querySelector('.quote-divider');
+                
+                if (quoteText) {
+                    quoteText.style.transform = `translateY(${scrollY * speed}px)`;
+                    quoteText.style.opacity = Math.max(0, 1 - scrollY / 600);
+                }
+                if (quoteAuthor) {
+                    quoteAuthor.style.transform = `translateY(${scrollY * speed * 0.7}px)`;
+                    quoteAuthor.style.opacity = Math.max(0, 1 - scrollY / 500);
+                }
+                if (quoteDivider) {
+                    quoteDivider.style.transform = `translateY(${scrollY * speed * 0.5}px)`;
+                    quoteDivider.style.opacity = Math.max(0, 1 - scrollY / 500);
+                }
+            }, { passive: true });
+        }
+
+        // ============================================
         // INITIALIZE ON LOAD
         // ============================================
 
-        function fullInit() { initializeSite(); initializeMusic(); }
+        function fullInit() {
+            initializeSite();
+            initializeMusic();
+            // Dismiss loading screen
+            setTimeout(() => {
+                const loader = document.getElementById('loadingScreen');
+                if (loader) loader.classList.add('hidden');
+            }, 1400);
+        }
         document.addEventListener("DOMContentLoaded", fullInit);
 
         // Fallback initialization in case DOMContentLoaded already fired
