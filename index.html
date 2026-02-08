@@ -600,48 +600,79 @@
             }
         }
 
+        /* DIAMOND BUBBLE: Bright clear diamond with rainbow fire */
         .bubble.bubble-jewelry {
-            background-size: 95% 95% !important;
-            background-position: center !important;
-            background-repeat: no-repeat !important;
-            border: 1px solid rgba(255,255,255,0.6);
+            background:
+                /* Bright specular highlight top-left */
+                radial-gradient(ellipse 35% 40% at 28% 25%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 30%, transparent 65%),
+                /* Secondary highlight bottom-right */
+                radial-gradient(ellipse 25% 30% at 72% 70%, rgba(255,255,255,0.8) 0%, transparent 55%),
+                /* Small sharp sparkle points */
+                radial-gradient(circle at 20% 35%, rgba(255,255,255,0.95) 0%, transparent 8%),
+                radial-gradient(circle at 65% 25%, rgba(255,255,255,0.9) 0%, transparent 6%),
+                radial-gradient(circle at 45% 75%, rgba(255,255,255,0.85) 0%, transparent 7%),
+                radial-gradient(circle at 80% 45%, rgba(255,255,255,0.8) 0%, transparent 5%),
+                /* Facet structure: angular gradients suggesting cut facets */
+                conic-gradient(from 0deg at 50% 50%,
+                    rgba(230,240,255,0.95) 0deg, rgba(255,255,255,1) 15deg,
+                    rgba(220,235,255,0.9) 30deg, rgba(245,250,255,1) 50deg,
+                    rgba(210,230,250,0.85) 65deg, rgba(255,255,255,0.95) 80deg,
+                    rgba(235,245,255,0.9) 100deg, rgba(250,252,255,1) 120deg,
+                    rgba(215,232,252,0.85) 140deg, rgba(255,255,255,0.95) 155deg,
+                    rgba(225,238,255,0.9) 175deg, rgba(248,252,255,1) 195deg,
+                    rgba(212,228,248,0.85) 210deg, rgba(255,255,255,0.95) 230deg,
+                    rgba(230,242,255,0.9) 250deg, rgba(252,254,255,1) 270deg,
+                    rgba(218,235,255,0.85) 290deg, rgba(255,255,255,0.95) 310deg,
+                    rgba(238,248,255,0.9) 330deg, rgba(255,255,255,1) 350deg,
+                    rgba(230,240,255,0.95) 360deg
+                ) !important;
+            border: 1.5px solid rgba(255,255,255,0.9) !important;
             box-shadow:
-                0 0 25px rgba(255,255,255,0.5),
-                0 0 50px rgba(200,220,255,0.25),
-                0 0 8px rgba(246,153,205,0.1),
-                inset 0 0 12px rgba(255,255,255,0.2);
+                0 0 20px rgba(255,255,255,0.7),
+                0 0 40px rgba(200,220,255,0.35),
+                0 0 6px rgba(255,255,255,0.9),
+                inset 0 0 20px rgba(255,255,255,0.5),
+                inset 0 -8px 15px rgba(200,220,255,0.3) !important;
             border-radius: 50%;
-            animation: diamondGlow 3s ease-in-out infinite;
         }
 
+        /* Animated glow pulse for diamond */
         @keyframes diamondGlow {
-            0%, 100% { box-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 60px rgba(200,220,255,0.3), 0 0 10px rgba(246,153,205,0.15), inset 0 0 15px rgba(255,255,255,0.3); }
-            50% { box-shadow: 0 0 45px rgba(255,255,255,0.85), 0 0 90px rgba(200,220,255,0.45), 0 0 20px rgba(246,153,205,0.25), inset 0 0 25px rgba(255,255,255,0.5); }
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255,255,255,0.7), 0 0 40px rgba(200,220,255,0.35), 0 0 6px rgba(255,255,255,0.9), inset 0 0 20px rgba(255,255,255,0.5);
+                filter: brightness(1) contrast(1.05);
+            }
+            50% {
+                box-shadow: 0 0 35px rgba(255,255,255,0.9), 0 0 70px rgba(200,220,255,0.5), 0 0 12px rgba(255,255,255,1), inset 0 0 30px rgba(255,255,255,0.7);
+                filter: brightness(1.15) contrast(1.1);
+            }
         }
 
-        /* Diamond shimmer: rotating prismatic rainbow overlay */
+        /* Rainbow fire overlay: rotating prismatic colors */
         .bubble.bubble-jewelry::after {
             content: '';
             position: absolute;
-            inset: 0;
+            inset: -2px;
             border-radius: 50%;
             background:
-                radial-gradient(circle at 30% 25%, rgba(255,255,255,0.4) 0%, transparent 25%),
-                conic-gradient(from 0deg,
-                    rgba(255,200,100,0.12) 0deg, transparent 20deg,
-                    rgba(100,180,255,0.14) 45deg, transparent 65deg,
-                    rgba(255,100,160,0.1) 90deg, transparent 110deg,
-                    rgba(100,255,200,0.12) 135deg, transparent 155deg,
-                    rgba(180,100,255,0.1) 180deg, transparent 200deg,
-                    rgba(255,200,100,0.12) 225deg, transparent 245deg,
-                    rgba(100,180,255,0.14) 270deg, transparent 290deg,
-                    rgba(255,100,160,0.1) 315deg, transparent 335deg,
-                    transparent 360deg
+                /* Rainbow fire flashes at different angles */
+                conic-gradient(from 0deg at 50% 50%,
+                    transparent 0deg,
+                    rgba(255,80,80,0.25) 10deg, transparent 25deg,
+                    rgba(255,180,50,0.2) 50deg, transparent 65deg,
+                    rgba(80,200,255,0.3) 90deg, transparent 110deg,
+                    rgba(160,80,255,0.2) 130deg, transparent 150deg,
+                    rgba(255,100,180,0.25) 170deg, transparent 190deg,
+                    rgba(80,255,160,0.2) 210deg, transparent 230deg,
+                    rgba(255,200,80,0.25) 250deg, transparent 270deg,
+                    rgba(80,150,255,0.3) 290deg, transparent 315deg,
+                    rgba(255,80,120,0.2) 335deg, transparent 360deg
                 );
             z-index: 1;
             pointer-events: none;
-            animation: diamondFireRotate 7s linear infinite;
-            mix-blend-mode: overlay;
+            animation: diamondFireRotate 6s linear infinite;
+            mix-blend-mode: normal;
+            opacity: 0.8;
         }
 
         @keyframes diamondFireRotate {
@@ -693,120 +724,62 @@
             color: #ffd700;
         }
 
-        /* Pop Away: soap bubble wobble then BURST */
+        /* Pop Away: cute wobble, inflate, then POP with confetti */
         @keyframes popAway {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-                box-shadow: 0 4px 20px rgba(74,18,89,0.2);
-            }
-            15% {
-                transform: scale(1.2) rotate(2deg);
-                opacity: 1;
-            }
-            30% {
-                transform: scale(0.92) rotate(-2deg);
-                opacity: 0.95;
-            }
-            45% {
-                transform: scale(1.18) rotate(1deg);
-                border-width: 3px;
-                opacity: 0.85;
-            }
-            60% {
-                transform: scale(1.3);
-                opacity: 0.6;
-                box-shadow:
-                    -18px -18px 0 3px rgba(255,180,210,0.7),
-                    20px -14px 0 2px rgba(180,210,255,0.6),
-                    -14px 20px 0 2.5px rgba(210,255,220,0.6),
-                    16px 16px 0 2px rgba(255,220,180,0.5),
-                    0px -22px 0 1.5px rgba(255,180,230,0.5),
-                    -22px 0px 0 2px rgba(180,220,255,0.5);
-            }
-            100% {
-                transform: scale(0);
-                opacity: 0;
-                box-shadow:
-                    -40px -40px 0 0 rgba(255,180,210,0),
-                    44px -30px 0 0 rgba(180,210,255,0),
-                    -30px 44px 0 0 rgba(210,255,220,0),
-                    36px 36px 0 0 rgba(255,220,180,0),
-                    0px -48px 0 0 rgba(255,180,230,0),
-                    -48px 0px 0 0 rgba(180,220,255,0);
-            }
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            20% { transform: scale(1.25) rotate(5deg); opacity: 1; }
+            35% { transform: scale(0.9) rotate(-4deg); opacity: 1; }
+            50% { transform: scale(1.3) rotate(3deg); opacity: 0.9; }
+            65% { transform: scale(1.4) rotate(-2deg); opacity: 0.7; }
+            80% { transform: scale(1.6); opacity: 0.3; }
+            100% { transform: scale(0.1); opacity: 0; }
         }
 
         .bubble.pop-away {
-            animation: popAway 0.55s cubic-bezier(0.25, 0.8, 0.25, 1) forwards !important;
+            animation: popAway 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards !important;
         }
 
-        /* Glimmer Away: diamond catches light, sparkle points burst out, dissolves */
+        /* Glimmer Away: flash bright white, then dissolve into sparkles */
         @keyframes glimmerAway {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-                filter: brightness(1);
-                box-shadow: 0 0 30px rgba(255,255,255,0.6);
-            }
-            20% {
-                transform: scale(1.08);
-                filter: brightness(2.5);
-                box-shadow:
-                    0 0 50px rgba(255,255,255,0.9),
-                    -12px -14px 0 2px rgba(255,255,255,0.9),
-                    14px -10px 0 1.5px rgba(200,230,255,0.8),
-                    -10px 14px 0 2px rgba(255,220,255,0.7),
-                    12px 12px 0 1.5px rgba(220,240,255,0.8),
-                    0px -16px 0 1px rgba(255,255,255,0.7);
-            }
-            50% {
-                transform: scale(1.12);
-                filter: brightness(3.5);
-                opacity: 0.8;
-                box-shadow:
-                    0 0 70px rgba(255,255,255,0.8),
-                    -28px -30px 0 1.5px rgba(255,255,255,0.7),
-                    30px -22px 0 1px rgba(200,230,255,0.6),
-                    -22px 30px 0 1.5px rgba(255,220,255,0.5),
-                    26px 26px 0 1px rgba(220,240,255,0.6),
-                    0px -34px 0 0.5px rgba(255,255,255,0.5),
-                    -34px 0px 0 1px rgba(200,220,255,0.4),
-                    34px 0px 0 0.5px rgba(255,240,255,0.4);
-            }
-            100% {
-                transform: scale(0.6);
-                opacity: 0;
-                filter: brightness(5);
-                box-shadow:
-                    0 0 0 rgba(255,255,255,0),
-                    -55px -55px 0 0 rgba(255,255,255,0),
-                    55px -45px 0 0 rgba(200,230,255,0),
-                    -45px 55px 0 0 rgba(255,220,255,0),
-                    50px 50px 0 0 rgba(220,240,255,0),
-                    0px -60px 0 0 rgba(255,255,255,0),
-                    -60px 0px 0 0 rgba(200,220,255,0),
-                    60px 0px 0 0 rgba(255,240,255,0);
-            }
+            0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+            25% { transform: scale(1.1); opacity: 1; filter: brightness(2); }
+            50% { transform: scale(1.15); opacity: 0.9; filter: brightness(3) saturate(2); }
+            75% { transform: scale(1.05); opacity: 0.5; filter: brightness(4) saturate(1.5); }
+            100% { transform: scale(0.8); opacity: 0; filter: brightness(6); }
         }
 
         .bubble.glimmer-away {
             animation: glimmerAway 0.7s ease-out forwards !important;
         }
 
+        /* Particle styles for pop and glimmer effects */
+        .pop-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+        }
+        @keyframes particleFly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .sparkle-particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 999;
+            background: white;
+        }
+        @keyframes sparkleFly {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+            100% { opacity: 0; }
+        }
+
         /* Appear animation for new bubbles */
         @keyframes bubbleAppear {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-            70% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.15) rotate(3deg); opacity: 0.8; }
+            70% { transform: scale(0.95) rotate(-1deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
         .bubble.appear {
@@ -841,6 +814,18 @@
         .bubble.float2 { animation: float2 10s ease-in-out infinite; }
         .bubble.float3 { animation: float3 12s ease-in-out infinite; }
         .bubble.float4 { animation: float4 14s ease-in-out infinite; }
+
+        /* Diamond bubbles need BOTH float AND glow animations */
+        .bubble.bubble-jewelry.float1 { animation: float1 8s ease-in-out infinite, diamondGlow 3s ease-in-out infinite; }
+        .bubble.bubble-jewelry.float2 { animation: float2 10s ease-in-out infinite, diamondGlow 3s ease-in-out infinite; }
+        .bubble.bubble-jewelry.float3 { animation: float3 12s ease-in-out infinite, diamondGlow 3s ease-in-out infinite; }
+        .bubble.bubble-jewelry.float4 { animation: float4 14s ease-in-out infinite, diamondGlow 3s ease-in-out infinite; }
+
+        /* Charm bubbles need BOTH float AND soap shimmer */
+        .bubble.bubble-charm.float1 { animation: float1 8s ease-in-out infinite, soapBubbleShimmer 5s linear infinite; }
+        .bubble.bubble-charm.float2 { animation: float2 10s ease-in-out infinite, soapBubbleShimmer 5s linear infinite; }
+        .bubble.bubble-charm.float3 { animation: float3 12s ease-in-out infinite, soapBubbleShimmer 5s linear infinite; }
+        .bubble.bubble-charm.float4 { animation: float4 14s ease-in-out infinite, soapBubbleShimmer 5s linear infinite; }
 
         /* ===== THINGS I BUY PAGE (MOODBOARD) ===== */
         .things-content {
@@ -2117,7 +2102,7 @@
             });
 
             // Filter bubbles with animation
-            bubbles.forEach(bubble => {
+            bubbles.forEach((bubble, i) => {
                 const isCharm = bubble.getAttribute("data-category") === "nail-charm";
                 const isJewelry = bubble.getAttribute("data-category") === "jewelry";
                 const shouldShow = category === "all" || (category === "nail-charm" && isCharm) || (category === "jewelry" && isJewelry);
@@ -2134,31 +2119,109 @@
                             bubble.classList.add(floatClass);
                         }
 
-                        // Remove appear class after animation
                         setTimeout(() => {
                             bubble.classList.remove("appear");
-                        }, 500);
+                        }, 600);
                     }
                 } else {
                     if (!bubble.classList.contains("hidden")) {
                         // Remove float animation to prevent conflicts
                         bubble.classList.remove('float1', 'float2', 'float3', 'float4');
 
-                        // Add exit animation based on type
-                        if (isCharm) {
-                            bubble.classList.add("pop-away");
-                        } else {
-                            bubble.classList.add("glimmer-away");
-                        }
-
-                        // Hide after animation completes (match new durations)
+                        // Stagger the exit animations slightly
                         setTimeout(() => {
-                            bubble.classList.add("hidden");
-                            bubble.classList.remove("pop-away", "glimmer-away");
-                        }, isCharm ? 550 : 700);
+                            if (isCharm) {
+                                bubble.classList.add("pop-away");
+                                // Create colorful pop particles
+                                createPopParticles(bubble);
+                            } else {
+                                bubble.classList.add("glimmer-away");
+                                // Create sparkle particles
+                                createGlimmerParticles(bubble);
+                            }
+
+                            // Hide after animation
+                            setTimeout(() => {
+                                bubble.classList.add("hidden");
+                                bubble.classList.remove("pop-away", "glimmer-away");
+                            }, isCharm ? 600 : 700);
+                        }, i * 60); // Stagger each bubble
                     }
                 }
             });
+        }
+
+        // Create colorful confetti particles when charm bubble pops
+        function createPopParticles(bubble) {
+            const rect = bubble.getBoundingClientRect();
+            const container = bubble.parentElement;
+            const containerRect = container.getBoundingClientRect();
+            const cx = rect.left - containerRect.left + rect.width / 2;
+            const cy = rect.top - containerRect.top + rect.height / 2;
+            const colors = ['#F699CD', '#FF69B4', '#DDA0DD', '#FFB6C1', '#E6E6FA', '#87CEEB', '#98FB98', '#FFD700', '#FFA07A'];
+
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'pop-particle';
+                const size = 4 + Math.random() * 8;
+                const angle = (Math.PI * 2 * i) / 12 + (Math.random() - 0.5) * 0.5;
+                const distance = 40 + Math.random() * 60;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const duration = 0.4 + Math.random() * 0.3;
+
+                particle.style.cssText = `
+                    width: ${size}px; height: ${size}px;
+                    background: ${color};
+                    left: ${cx}px; top: ${cy}px;
+                    box-shadow: 0 0 ${size}px ${color};
+                    animation: particleFly ${duration}s ease-out forwards;
+                `;
+                // Set the end position via custom animation
+                particle.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${dx}px, ${dy}px) scale(0.2)`, opacity: 0 }
+                ], { duration: duration * 1000, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', fill: 'forwards' });
+
+                container.appendChild(particle);
+                setTimeout(() => particle.remove(), duration * 1000 + 100);
+            }
+        }
+
+        // Create sparkle/star particles when diamond bubble glimmers away
+        function createGlimmerParticles(bubble) {
+            const rect = bubble.getBoundingClientRect();
+            const container = bubble.parentElement;
+            const containerRect = container.getBoundingClientRect();
+            const cx = rect.left - containerRect.left + rect.width / 2;
+            const cy = rect.top - containerRect.top + rect.height / 2;
+
+            for (let i = 0; i < 8; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'sparkle-particle';
+                const size = 3 + Math.random() * 5;
+                const angle = (Math.PI * 2 * i) / 8 + (Math.random() - 0.5) * 0.3;
+                const distance = 30 + Math.random() * 50;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+                const duration = 0.5 + Math.random() * 0.3;
+
+                // Star shape using clip-path
+                spark.style.cssText = `
+                    width: ${size}px; height: ${size}px;
+                    left: ${cx}px; top: ${cy}px;
+                    box-shadow: 0 0 ${size * 2}px rgba(255,255,255,0.9), 0 0 ${size * 4}px rgba(200,220,255,0.5);
+                    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+                `;
+                spark.animate([
+                    { transform: 'translate(0, 0) scale(1.5) rotate(0deg)', opacity: 1 },
+                    { transform: `translate(${dx}px, ${dy}px) scale(0) rotate(180deg)`, opacity: 0 }
+                ], { duration: duration * 1000, easing: 'ease-out', fill: 'forwards' });
+
+                container.appendChild(spark);
+                setTimeout(() => spark.remove(), duration * 1000 + 100);
+            }
         }
 
         function populateThingsPage() {
@@ -2400,22 +2463,14 @@
             ];
 
             // SVG diamond pattern as data URI
-            const diamondBG = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiAKICAgICB2aWV3Qm94PSIwIDAgNDAwIDQwMCIgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPgogIAogIDwhLS0gRGVmaW5lIGZpbHRlcnMgZm9yIHJlYWxpc3RpYyBkaWFtb25kIGxpZ2h0aW5nIC0tPgogIDxkZWZzPgogICAgPCEtLSBTcGVjdWxhciBsaWdodGluZyBmaWx0ZXIgZm9yIHN1cmZhY2UgcmVmbGVjdGlvbiAtLT4KICAgIDxmaWx0ZXIgaWQ9InNwZWN1bGFybGlnaHRpbmciPgogICAgICA8ZmVHYXVzc2lhbkJsdXIgaW49IlNvdXJjZUdyYXBoaWMiIHN0ZERldmlhdGlvbj0iMC41IiByZXN1bHQ9ImJsdXIiLz4KICAgICAgPGZlU3BlY3VsYXJMaWdodGluZyBpbj0iYmx1ciIgc3VyZmFjZVNjYWxlPSI1IiBzcGVjdWxhckNvbnN0YW50PSIwLjgiIAogICAgICAgICAgICAgICAgICAgICAgICAgIHNwZWN1bGFyRXhwb25lbnQ9IjIwIiBsaWdodGluZy1jb2xvcj0iI2ZmZmZmZiIgcmVzdWx0PSJzcGVjIj4KICAgICAgICA8ZmVQb2ludExpZ2h0IHg9Ii0xMDAiIHk9Ii0xMDAiIHo9IjE1MCIvPgogICAgICA8L2ZlU3BlY3VsYXJMaWdodGluZz4KICAgICAgPGZlQ29tcG9zaXRlIGluPSJzcGVjIiBpbjI9IlNvdXJjZUdyYXBoaWMiIG9wZXJhdG9yPSJhcml0aG1ldGljIiBrMT0iMCIgazI9IjEiIGszPSIxIiBrND0iMCIvPgogICAgPC9maWx0ZXI+CiAgICAKICAgIDwhLS0gVHVyYnVsZW5jZSBmb3Igc3VidGxlIHN1cmZhY2UgZGV0YWlsIC0tPgogICAgPGZpbHRlciBpZD0idHVyYnVsZW5jZSI+CiAgICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjA1IiBudW1PY3RhdmVzPSIzIiByZXN1bHQ9Im5vaXNlIi8+CiAgICAgIDxmZURpc3BsYWNlbWVudE1hcCBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJub2lzZSIgc2NhbGU9IjAuMyIgeENoYW5uZWxTZWxlY3Rvcj0iUiIgeUNoYW5uZWxTZWxlY3Rvcj0iRyIvPgogICAgPC9maWx0ZXI+CiAgICAKICAgIDwhLS0gR2xvdyBmaWx0ZXIgZm9yIHNwZWN1bGFyIGhpZ2hsaWdodHMgLS0+CiAgICA8ZmlsdGVyIGlkPSJnbG93Ij4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMiIgcmVzdWx0PSJjb2xvcmVkQmx1ciIvPgogICAgICA8ZmVNZXJnZT4KICAgICAgICA8ZmVNZXJnZU5vZGUgaW49ImNvbG9yZWRCbHVyIi8+CiAgICAgICAgPGZlTWVyZ2VOb2RlIGluPSJTb3VyY2VHcmFwaGljIi8+CiAgICAgIDwvZmVNZXJnZT4KICAgIDwvZmlsdGVyPgogICAgCiAgICA8IS0tIENpcmN1bGFyIGNsaXBwaW5nIG1hc2sgLS0+CiAgICA8Y2xpcFBhdGggaWQ9ImRpYW1vbmRDbGlwIj4KICAgICAgPGNpcmNsZSBjeD0iMjAwIiBjeT0iMjAwIiByPSIxODAiLz4KICAgIDwvY2xpcFBhdGg+CiAgICAKICAgIDwhLS0gUmFkaWFsIGdyYWRpZW50cyBmb3IgZmFjZXQgbGlnaHRpbmcgLS0+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9InRhYmxlR3JhZGllbnQiIGN4PSI1MCUiIGN5PSIzMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmZmZmZmO3N0b3Atb3BhY2l0eTowLjk1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMzAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZThmNGZmO3N0b3Atb3BhY2l0eTowLjgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI2MCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNiOGQ4ZmY7c3RvcC1vcGFjaXR5OjAuNiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiM0YTVmN2Y7c3RvcC1vcGFjaXR5OjAuMyIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICAgIAogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJoaWdoRmFjZXQiIGN4PSI0MCUiIGN5PSIzNSUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZmZmZmZmO3N0b3Atb3BhY2l0eToxIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZTBmMGZmO3N0b3Atb3BhY2l0eTowLjkiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYTBjOGZmO3N0b3Atb3BhY2l0eTowLjYiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgICAKICAgIDxyYWRpYWxHcmFkaWVudCBpZD0iZGFya0ZhY2V0IiBjeD0iNjAlIiBjeT0iNjAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzNhNGE2YTtzdG9wLW9wYWNpdHk6MC45Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWEyYTRhO3N0b3Atb3BhY2l0eTowLjgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGExYTNhO3N0b3Atb3BhY2l0eTowLjciLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgICAKICAgIDxyYWRpYWxHcmFkaWVudCBpZD0ibWlkZGxlRmFjZXQiIGN4PSI0NSUiIGN5PSI0NSUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZDBlOGZmO3N0b3Atb3BhY2l0eTowLjg1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdHlsZT0ic3RvcC1jb2xvcjojOGFiOGZmO3N0b3Atb3BhY2l0eTowLjciLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojNGE2YThmO3N0b3Atb3BhY2l0eTowLjUiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgICAKICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZmlyZUdyYWRpZW50MSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmMGU4ZmY7c3RvcC1vcGFjaXR5OjAuNCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZmU4ZjA7c3RvcC1vcGFjaXR5OjAuMyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIAogICAgPGxpbmVhckdyYWRpZW50IGlkPSJmaXJlR3JhZGllbnQyIiB4MT0iMTAwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I2U4ZmZmMDtzdG9wLW9wYWNpdHk6MC4zIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmZjhlODtzdG9wLW9wYWNpdHk6MC40Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICAKICAKICAKICAKICAGPCETLSBCYWNRZ3JvdW5kICh0cmFuc3BhcmVudCkgLS0+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InRyYW5zcGFyZW50Ii8+CiAgCiAgPGcgY2xpcC1wYXRoPSJ1cmwoI2RpYW1vbmRDbGlwKSI+CiAgICAKICAgIDwhLS0gT3V0ZXIgZ2lyZGxlIGxheWVyIChkYXJrZXN0KSAtLT4KICAgIDxnIG9wYWNpdHk9IjAuODUiPgogICAgICA8IS0tIEdpcmRsZSBmYWNldHMgLSA4IG91dGVyIGZhY2V0cyAtLT4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMDAsNDAgMjcwLDgwIDI5MCwxMTAgMjYwLDE0MCIgZmlsbD0idXJsKCNkYXJrRmFjZXQpIiBzdHJva2U9IiMwYTBhMWEiIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjcwLDgwIDI5MCwxMTAgMzIwLDEzMCAzMTAsMTAwIiBmaWxsPSIjMWEyYTRhIiBzdHJva2U9IiMwYTBhMWEiIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjkwLDExMCAzMjAsMTMwIDM0MCwxNzAgMzEwLDE1MCIgZmlsbD0iIzJhM2E1YSIgc3Ryb2tlPSIjMGEwYTFhIiBzdHJva2Utd2lkdGg9IjAuNSIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjMyMCwxMzAgMzQwLDE3MCAzNjAsMjEwIDMzMCwxODAiIGZpbGw9InVybCgjZGFya0ZhY2V0KSIgc3Ryb2tlPSIjMGEwYTFhIiBzdHJva2Utd2lkdGg9IjAuNSIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjM0MCwxNzAgMzYwLDIxMCAzNTAsMjUwIDMyMCwyMjAiIGZpbGw9IiMxYTJhNGEiIHN0cm9rZT0iIzBhMGExYSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIzNjAsMjEwIDM0MCwyNTAgMzEwLDI3MCAzMzAsMjQwIiBmaWxsPSIjMmEzYTVhIiBzdHJva2U9IiMwYTBhMWEiIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICA8L2c+CiAgICAKICAgIDwhLS0gQmV6ZWwgZmFjZXRzIC0gOCBpbm5lciBmYWNldHMgKGJyaWdodCBhbmQgZGFyayBhbHRlcm5hdGluZykgLS0+CiAgICA8ZyBvcGFjaXR5PSIwLjkiPgogICAgICA8IS0tIEJyaWdodCBiZXplbCBmYWNldHMgd2l0aCBmaXJlIGdyYWRpZW50IC0tPgogICAgICA8cG9seWdvbiBwb2ludHM9IjIwMCw4MCAyNjAsMTIwIDI0MCwxNjAgMTgwLDE0MCIgZmlsbD0idXJsKCNoaWdoRmFjZXQpIiBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC43Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjAwLDgwIDIyMCw1MCAyNjAsMTIwIDI0MCwxNjAiIGZpbGw9InVybCgjZmlyZUdyYWRpZW50MSkiIHN0cm9rZT0iIzJhM2E0YSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuNiIvPgogICAgICAKICAgICAgPHBvbHlnb24gcG9pbnRzPSIyNjAsMTIwIDMxMCwxMDAgMzQwLDE1MCAyODAsMTYwIiBmaWxsPSJ1cmwoI21pZGRsZUZhY2V0KSIgc3Ryb2tlPSIjMWEyYTNhIiBzdHJva2Utd2lkdGg9IjAuNyIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjMxMCwxMDAgMzUwLDEyMCAzNjAsMTgwIDMyMCwxNzAiIGZpbGw9InVybCgjaGlnaEZhY2V0KSIgc3Ryb2tlPSIjMWEyYTNhIiBzdHJva2Utd2lkdGg9IjAuNyIvPgogICAgICAKICAgICAgPHBvbHlnb24gcG9pbnRzPSIzNDAsMTUwIDM2MCwxODAgMzQwLDI0MCAzMDAsMjAwIiBmaWxsPSJ1cmwoI2RhcmtGYWNldCkiIHN0cm9rZT0iIzBhMGExYSIgc3Ryb2tlLXdpZHRoPSIwLjciLz4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIzNjAsMTgwIDM1MCwyMzAgMzEwLDI2MCAzMzAsMjEwIiBmaWxsPSJ1cmwoI2hpZ2hGYWNldCkiIHN0cm9rZT0iIzFhMmEzYSIgc3Ryb2tlLXdpZHRoPSIwLjciLz4KICAgICAgCiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMzAwLDIwMCAzNDAsMjQwIDI4MCwyODAgMjQwLDI0MCIgZmlsbD0idXJsKCNtaWRkbGVGYWNldCkiIHN0cm9rZT0iIzFhMmEzYSIgc3Ryb2tlLXdpZHRoPSIwLjciLz4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIyNDAsMjQwIDI4MCwyODAgMjIwLDMyMCAxODAsMjgwIiBmaWxsPSJ1cmwoI2RhcmtGYWNldCkiIHN0cm9rZT0iIzBhMGExYSIgc3Ryb2tlLXdpZHRoPSIwLjciLz4KICAgICAgCiAgICAgIDwhLS0gTGVmdCBzaWRlIGJlemVsIGZhY2V0cyAtLT4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIxODAsMTQwIDI0MCwxNjAgMjAwLDIwMCAxNDAsMTgwIiBmaWxsPSJ1cmwoI2hpZ2hGYWNldCkiIHN0cm9rZT0iIzFhMmEzYSIgc3Ryb2tlLXdpZHRoPSIwLjciLz4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIxNDAsMTgwIDIwMCwyMDAgMTgwLDI2MCAxMjAsMjQwIiBmaWxsPSJ1cmwoI21pZGRsZUZhY2V0KSIgc3Ryb2tlPSIjMWEyYTNhIiBzdHJva2Utd2lkdGg9IjAuNyIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjEyMCwyNDAgMTgwLDI2MCAxNDAsMzIwIDgwLDI4MCIgZmlsbD0idXJsKCNkYXJrRmFjZXQpIiBzdHJva2U9IiMwYTBhMWEiIHN0cm9rZS13aWR0aD0iMC43Ii8+CiAgICAgIAogICAgICA8IS0tIFRvcCBsZWZ0IGJlemVsIC0tPgogICAgICA8cG9seWdvbiBwb2ludHM9IjIwMCw4MCAxODAsMTQwIDE0MCwxMjAgMTYwLDYwIiBmaWxsPSJ1cmwoI2hpZ2hGYWNldCkiIHN0cm9rZT0iIzFhMmEzYSIgc3Ryb2tlLXdpZHRoPSIwLjciLz4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIxNDAsMTIwIDEwMCwxMDAgOTAsMTQwIDEyMCwxNjAiIGZpbGw9InVybCgjbWlkZGxlRmFjZXQpIiBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC43Ii8+CiAgICA8L2c+CiAgICAKICAgIDwhLS0gU3RhciBmYWNldHMgLSA4IHRyaWFuZ3VsYXIgZmFjZXRzIHBvaW50aW5nIHRvIGNyb3duIC0tPgogICAgPGcgb3BhY2l0eT0iMC45NSI+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjAwLDEyMCAyMzAsMTMwIDIxNSwxNjAiIGZpbGw9InVybCgjaGlnaEZhY2V0KSIgc3Ryb2tlPSIjMWExYTJhIiBzdHJva2Utd2lkdGg9IjAuNSIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjIzMCwxMzAgMjYwLDEyMCAyNTAsMTU1IiBmaWxsPSJ1cmwoI2ZpcmVHcmFkaWVudDIpIiBzdHJva2U9IiMxYTFhMmEiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjUiLz4KICAgICAgCiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjYwLDEyMCAyODAsMTQwIDI2MCwxNjAiIGZpbGw9InVybCgjaGlnaEZhY2V0KSIgc3Ryb2tlPSIjMWExYTJhIiBzdHJva2Utd2lkdGg9IjAuNSIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjI4MCwxNDAgMzAwLDE1MCAyODUsMTcwIiBmaWxsPSJ1cmwoI21pZGRsZUZhY2V0KSIgc3Ryb2tlPSIjMWExYTJhIiBzdHJva2Utd2lkdGg9IjAuNSIvPgogICAgICAKICAgICAgPHBvbHlnb24gcG9pbnRzPSIyODAsMjAwIDMwMCwxODAgMzEwLDIwMCIgZmlsbD0idXJsKCNoaWdoRmFjZXQpIiBzdHJva2U9IiMxYTFhMmEiIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMzAwLDE4MCAzMjAsMTkwIDMxMCwyMTAiIGZpbGw9InVybCgjZmlyZUdyYWRpZW50MSkiIHN0cm9rZT0iIzFhMWEyYSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuNSIvPgogICAgICAKICAgICAgPHBvbHlnb24gcG9pbnRzPSIyNjAsMjYwIDI4MCwyNDAgMjkwLDI3MCIgZmlsbD0idXJsKCNoaWdoRmFjZXQpIiBzdHJva2U9IiMxYTFhMmEiIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjQwLDI4MCAyNjAsMjYwIDI3MCwyOTAiIGZpbGw9InVybCgjbWlkZGxlRmFjZXQpIiBzdHJva2U9IiMxYTFhMmEiIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICAgIAogICAgICA8IS0tIExlZnQgc2lkZSBzdGFyIGZhY2V0cyAtLT4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIxNzAsMTYwIDIwMCwxMjAgMjE1LDE0MCIgZmlsbD0idXJsKCNoaWdoRmFjZXQpIiBzdHJva2U9IiMxYTFhMmEiIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMTQwLDE4MCAxNjAsMTYwIDE3NSwxOTAiIGZpbGw9InVybCgjbWlkZGxlRmFjZXQpIiBzdHJva2U9IiMxYTFhMmEiIHN0cm9rZS13aWR0aD0iMC41Ii8+CiAgICAgIAogICAgICA8cG9seWdvbiBwb2ludHM9IjEyMCwyMDAgMTQwLDE4MCAxNTAsMjEwIiBmaWxsPSJ1cmwoI2hpZ2hGYWNldCkiIHN0cm9rZT0iIzFhMWEyYSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIxMDAsMjAwIDEyMCwyMDAgMTIwLDIzMCIgZmlsbD0idXJsKCNmaXJlR3JhZGllbnQxKSIgc3Ryb2tlPSIjMWExYTJhIiBzdHJva2Utd2lkdGg9IjAuNSIgb3BhY2l0eT0iMC41Ii8+CiAgICA8L2c+CiAgICAKICAgIDwhLS0gVXBwZXIgZ2lyZGxlIGZhY2V0cyAtIHRyYW5zaXRpb24gem9uZSAtLT4KICAgIDxnIG9wYWNpdHk9IjAuOCI+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjAwLDEyMCAyMzAsMTMwIDI1MCwxMTAgMjIwLDkwIiBmaWxsPSJ1cmwoI21pZGRsZUZhY2V0KSIgc3Ryb2tlPSIjMWEyYTNhIiBzdHJva2Utd2lkdGg9IjAuNSIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjI1MCwxMTAgMjgwLDEyMCAyOTAsOTAgMjcwLDcwIiBmaWxsPSJ1cmwoI2hpZ2hGYWNldCkiIHN0cm9rZT0iIzFhMmEzYSIgc3Ryb2tlLXdpZHRoPSIwLjUiLz4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIyODAsMTIwIDMxMCwxNDAgMzEwLDExMCAyOTAsOTAiIGZpbGw9InVybCgjZGFya0ZhY2V0KSIgc3Ryb2tlPSIjMGEwYTFhIiBzdHJva2Utd2lkdGg9IjAuNSIvPgogICAgPC9nPgogICAgCiAgICA8IS0tIFRhYmxlIChtYWluIGNyb3duIGNlbnRlcikgLS0+CiAgICA8Zz4KICAgICAgPCEtLSBCYXNlIHRhYmxlIHdpdGggZ3JhZGllbnQgLS0+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMTgwLDE1MCAyMjAsMTQwIDI0MCwxNjAgMjAwLDE4MCIgZmlsbD0idXJsKCN0YWJsZUdyYWRpZW50KSIgCiAgICAgICAgICAgICAgIHN0cm9rZT0iIzJhM2E0YSIgc3Ryb2tlLXdpZHRoPSIwLjgiIGZpbHRlcj0idXJsKCN0dXJidWxlbmNlKSIvPgogICAgICAKICAgICAgPCEtLSBSZWZpbmVkIHRhYmxlIGNlbnRlciAtLT4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIxODUsMTU1IDIxNSwxNDUgMjM1LDE2NSAyMDUsMTc1IiBmaWxsPSJ1cmwoI2hpZ2hGYWNldCkiIAogICAgICAgICAgICAgICBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC42IiBvcGFjaXR5PSIwLjkiLz4KICAgICAgCiAgICAgIDwhLS0gSW5uZXIgdGFibGUgY29yZSB3aXRoIGJyaWdodCB3aGl0ZSBjZW50ZXIgLS0+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMTkwLDE2MCAyMTAsMTUwIDIzMCwxNjggMjEwLDE3OCIgZmlsbD0iI2ZmZmZmZiIgCiAgICAgICAgICAgICAgIHN0cm9rZT0iIzNhNGE1YSIgc3Ryb2tlLXdpZHRoPSIwLjQiIG9wYWNpdHk9IjAuOTUiIGZpbHRlcj0idXJsKCNnbG93KSIvPgogICAgPC9nPgogICAgCiAgICA8IS0tIENyb3duIGZhY2V0cyAodXBwZXIgdHJpYW5ndWxhciBzZWN0aW9ucykgLS0+CiAgICA8ZyBvcGFjaXR5PSIwLjkyIj4KICAgICAgPCEtLSBUb3AgY2VudGVyIGNyb3duIC0tPgogICAgICA8cG9seWdvbiBwb2ludHM9IjIwMCw2MCAyMjAsOTAgMTgwLDkwIiBmaWxsPSJ1cmwoI2hpZ2hGYWNldCkiIHN0cm9rZT0iIzFhMmEzYSIgc3Ryb2tlLXdpZHRoPSIwLjYiLz4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMDAsNDAgMjAwLDYwIDIyMCw5MCAyMjAsNzAiIGZpbGw9InVybCgjZmlyZUdyYWRpZW50MSkiIHN0cm9rZT0iIzFhMmEzYSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuNCIvPgogICAgICAKICAgICAgPCEtLSBVcHBlciByaWdodCBjcm93biAtLT4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMjAsOTAgMjcwLDcwIDI2MCwxMjAiIGZpbGw9InVybCgjbWlkZGxlRmFjZXQpIiBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC42Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjYwLDEyMCAyODAsMTEwIDI5MCwxNDAgMjcwLDE1MCIgZmlsbD0idXJsKCNoaWdoRmFjZXQpIiBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC42Ii8+CiAgICAgIAogICAgICA8IS0tIFVwcGVyIHJpZ2h0IGZhciAtLT4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIyOTAsMTQwIDMxMCwxMjAgMzMwLDE2MCIgZmlsbD0idXJsKCNkYXJrRmFjZXQpIiBzdHJva2U9IiMwYTBhMWEiIHN0cm9rZS13aWR0aD0iMC42Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMzEwLDEwMCAzNDAsMTAwIDM1MCwxNDAgMzMwLDE0MCIgZmlsbD0idXJsKCNoaWdoRmFjZXQpIiBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC42Ii8+CiAgICAgIAogICAgICA8IS0tIFJpZ2h0IHNpZGUgY3Jvd24gLS0+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMzMwLDE2MCAzNjAsMTYwIDM1MCwyMTAiIGZpbGw9InVybCgjbWlkZGxlRmFjZXQpIiBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC42Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMzEwLDE4MCAzNDAsMTgwIDMzMCwyMjAiIGZpbGw9InVybCgjaGlnaEZhY2V0KSIgc3Ryb2tlPSIjMWEyYTNhIiBzdHJva2Utd2lkdGg9IjAuNiIvPgogICAgICAKICAgICAgPCEtLSBMb3dlciByaWdodCBjcm93biAtLT4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIyODAsMjQwIDMxMCwyMzAgMzIwLDI4MCIgZmlsbD0idXJsKCNkYXJrRmFjZXQpIiBzdHJva2U9IiMwYTBhMWEiIHN0cm9rZS13aWR0aD0iMC42Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjYwLDI2MCAyOTAsMjUwIDMxMCwyOTAiIGZpbGw9InVybCgjbWlkZGxlRmFjZXQpIiBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC42Ii8+CiAgICAgIAogICAgICA8IS0tIEJvdHRvbSBjcm93biAtLT4KICAgICAgPHBvbHlnb24gcG9pbnRzPSIyMjAsMzEwIDIwMCwzNDAgMjQwLDMzMCIgZmlsbD0idXJsKCNoaWdoRmFjZXQpIiBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC42Ii8+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMTgwLDMyMCAyMTAsMzQwIDIwMCwzNjAiIGZpbGw9InVybCgjZmlyZUdyYWRpZW50MikiIHN0cm9rZT0iIzFhMmEzYSIgc3Ryb2tlLXdpZHRoPSIwLjUiIG9wYWNpdHk9IjAuNCIvPgogICAgICAKICAgICAgPCEtLSBMb3dlciBsZWZ0IGNyb3duIC0tPgogICAgICA8cG9seWdvbiBwb2ludHM9IjE0MCwyODAgMTcwLDI5MCAxNjAsMzMwIiBmaWxsPSJ1cmwoI21pZGRsZUZhY2V0KSIgc3Ryb2tlPSIjMWEyYTNhIiBzdHJva2Utd2lkdGg9IjAuNiIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjEyMCwyNDAgMTUwLDI1MCAxNDAsMjkwIiBmaWxsPSJ1cmwoI2RhcmtGYWNldCkiIHN0cm9rZT0iIzBhMGExYSIgc3Ryb2tlLXdpZHRoPSIwLjYiLz4KICAgICAgCiAgICAgIDwhLS0gTGVmdCBzaWRlIGNyb3duIC0tPgogICAgICA8cG9seWdvbiBwb2ludHM9IjkwLDIwMCAxMjAsMjEwIDEwMCwyNTAiIGZpbGw9InVybCgjaGlnaEZhY2V0KSIgc3Ryb2tlPSIjMWEyYTNhIiBzdHJva2Utd2lkdGg9IjAuNiIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjEwMCwxNDAgMTMwLDE1MCAxMjAsMTkwIiBmaWxsPSJ1cmwoI21pZGRsZUZhY2V0KSIgc3Ryb2tlPSIjMWEyYTNhIiBzdHJva2Utd2lkdGg9IjAuNiIvPgogICAgICAKICAgICAgPCEtLSBVcHBlciBsZWZ0IGNyb3duIC0tPgogICAgICA8cG9seWdvbiBwb2ludHM9IjEzMCwxMDAgMTYwLDkwIDE3MCwxNDAiIGZpbGw9InVybCgjZGFya0ZhY2V0KSIgc3Ryb2tlPSIjMGEwYTFhIiBzdHJva2Utd2lkdGg9IjAuNiIvPgogICAgICA8cG9seWdvbiBwb2ludHM9IjE0MCw3MCAxNzAsODAgMTUwLDEyMCIgZmlsbD0idXJsKCNoaWdoRmFjZXQpIiBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC42Ii8+CiAgICA8L2c+CiAgICAKICAgIDwhLS0gU3BlY3VsYXIgaGlnaGxpZ2h0cyAtIGJyaWdodCByZWZsZWN0aW9ucyAtLT4KICAgIDxnIG9wYWNpdHk9IjAuOTgiIGZpbHRlcj0idXJsKCNnbG93KSI+CiAgICAgIDwhLS0gTWFpbiBicmlnaHQgaGlnaGxpZ2h0IGluIHVwcGVyIGxlZnQgYXJlYSAtLT4KICAgICAgPGVsbGlwc2UgY3g9IjE2MCIgY3k9IjExMCIgcng9IjIwIiByeT0iMjUiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuOSIvPgogICAgICA8ZWxsaXBzZSBjeD0iMTYyIiBjeT0iMTA4IiByeD0iMTIiIHJ5PSIxNSIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC44Ii8+CiAgICAgIDxlbGxpcHNlIGN4PSIxNjQiIGN5PSIxMDYiIHJ4PSI2IiByeT0iOCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMSIvPgogICAgICAKICAgICAgPCEtLSBTZWNvbmRhcnkgaGlnaGxpZ2h0IG9uIHJpZ2h0IHNpZGUgLS0+CiAgICAgIDxlbGxpcHNlIGN4PSIzMTAiIGN5PSIxNDAiIHJ4PSIxNSIgcnk9IjE4IiBmaWxsPSIjZjBlOGZmIiBvcGFjaXR5PSIwLjciLz4KICAgICAgPGVsbGlwc2UgY3g9IjMxMiIgY3k9IjEzOCIgcng9IjgiIHJ5PSIxMCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC44NSIvPgogICAgICAKICAgICAgPCEtLSBTdWJ0bGUgbG93ZXIgaGlnaGxpZ2h0IC0tPgogICAgICA8ZWxsaXBzZSBjeD0iMjQwIiBjeT0iMjgwIiByeD0iMTIiIHJ5PSIxNCIgZmlsbD0iI2U4ZjRmZiIgb3BhY2l0eT0iMC42Ii8+CiAgICA8L2c+CiAgICAKICAgIDwhLS0gSW5uZXIgZGVwdGggbGluZXMgZm9yIGZhY2V0IGRlZmluaXRpb24gLS0+CiAgICA8ZyBzdHJva2U9IiMxYTJhM2EiIHN0cm9rZS13aWR0aD0iMC40IiBvcGFjaXR5PSIwLjUiIGZpbGw9Im5vbmUiPgogICAgICA8bGluZSB4MT0iMjAwIiB5MT0iODAiIHgyPSIyMzAiIHkyPSIxMzAiLz4KICAgICAgPGxpbmUgeDE9IjIwMCIgeTE9IjgwIiB4Mj0iMTcwIiB5Mj0iMTMwIi8+CiAgICAgIDxsaW5lIHgxPSIyMzAiIHkxPSIxMzAiIHgyPSIyNjAiIHkyPSIxMjAiLz4KICAgICAgPGxpbmUgeDE9IjE3MCIgeTE9IjEzMCIgeDI9IjE0MCIgeTI9IjEyMCIvPgogICAgICA8bGluZSB4MT0iMjYwIiB5Mj0iMTIwIiB4Mj0iMzEwIiB5Mj0iMTQwIi8+CiAgICAgIDxsaW5lIHgxPSIxNDAiIHkxPSIxMjAiIHgyPSIxMDAiIHkyPSIxNDAiLz4KICAgICAgPGxpbmUgeDE9IjIwMCIgeTE9IjE4MCIgeDI9IjI0MCIgeTI9IjI0MCIvPgogICAgICA8bGluZSB4MT0iMjAwIiB5MT0iMTgwIiB4Mj0iMTYwIiB5Mj0iMjQwIi8+CiAgICA8L2c+CiAgICAKICAgIDwhLS0gU3VidGxlIGN1bGV0IChib3R0b20gcG9pbnQpIHNoYWRvdyAtLT4KICAgIDxnIG9wYWNpdHk9IjAuMyI+CiAgICAgIDxwb2x5Z29uIHBvaW50cz0iMjAwLDM2MCAxOTUsMzU1IDIwNSwzNTUiIGZpbGw9IiMwYTBhMWEiIHN0cm9rZT0iIzAwMDAwMCIgc3Ryb2tlLXdpZHRoPSIwLjMiLz4KICAgIDwvZz4KICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKICAKK8L2c+Cjwvc3ZnPg==';
-
-            bubbles.forEach((bubble, index) => {
+                        bubbles.forEach((bubble, index) => {
                 const pos = positions[index % positions.length];
                 bubble.style.left = pos.x;
                 bubble.style.top = pos.y;
                 bubble.style.width = pos.size + "px";
                 bubble.style.height = pos.size + "px";
 
-                // Apply canvas diamond pattern to jewelry bubbles
-                if (bubble.classList.contains('bubble-jewelry')) {
-                    bubble.style.backgroundImage = 'url(' + diamondBG + ')';
-                    bubble.style.backgroundSize = 'cover';
-                    bubble.style.backgroundPosition = 'center';
-                }
-            });
+                // Apply canvas diamond pattern to jewelry bubbles            });
 
             // Initialize bubble physics
             initBubblePhysics();
