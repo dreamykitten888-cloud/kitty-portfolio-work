@@ -1724,7 +1724,114 @@
     <!-- ============================================
          CUSTOMIZE YOUR SITE HERE - EASY EDIT ZONE
          ============================================ -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script>
+        // Firebase initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8IlTrmRtVhAapWsgBuHOi98F6M_fH3f0",
+            authDomain: "kitty-portfolio.firebaseapp.com",
+            projectId: "kitty-portfolio",
+            storageBucket: "kitty-portfolio.firebasestorage.app",
+            messagingSenderId: "326819803409",
+            appId: "1:326819803409:web:67e1f94e6c04765d6b5cb0"
+        };
+
+
+        async function loadFromFirebase() {
+            if (!db) return;
+            
+            try {
+                // Load site config
+                const siteDoc = await db.collection('siteConfig').doc('main').get();
+                if (siteDoc.exists) {
+                    const data = siteDoc.data();
+                    if (data.siteName) CONFIG.siteName = data.siteName;
+                    if (data.tagline) CONFIG.tagline = data.tagline;
+                }
+                
+                // Load quotes
+                const quoteIds = ['home', 'thoughts', 'moodboard', 'thingsIBuy', 'research'];
+                for (const id of quoteIds) {
+                    const quoteDoc = await db.collection('quotes').doc(id).get();
+                    if (quoteDoc.exists) {
+                        const data = quoteDoc.data();
+                        if (CONFIG.quotes[id]) {
+                            if (data.text) CONFIG.quotes[id].text = data.text;
+                            if (data.author) CONFIG.quotes[id].author = data.author;
+                        }
+                    }
+                }
+                
+                // Load home cards
+                const cardsSnap = await db.collection('homeCards').orderBy('order').get();
+                if (!cardsSnap.empty) {
+                    CONFIG.homeCards = cardsSnap.docs.map(doc => ({
+                        title: doc.data().title || '',
+                        subtitle: doc.data().subtitle || '',
+                        image: doc.data().image || 'gradient1'
+                    }));
+                }
+                
+                // Load thoughts
+                const thoughtsSnap = await db.collection('thoughts').orderBy('order').get();
+                if (!thoughtsSnap.empty) {
+                    CONFIG.thoughts = thoughtsSnap.docs.map(doc => doc.data().text || '');
+                }
+                
+                // Load products
+                const productsSnap = await db.collection('products').orderBy('order').get();
+                if (!productsSnap.empty) {
+                    CONFIG.products = productsSnap.docs.map(doc => {
+                        const d = doc.data();
+                        return {
+                            name: d.name || '',
+                            price: d.price || '',
+                            description: d.description || '',
+                            link: d.link || '#',
+                            category: d.category || 'nail-charm',
+                            image: d.image || '',
+                            sold: d.sold || false
+                        };
+                    });
+                }
+                
+                // Load things/moodboard items
+                const thingsSnap = await db.collection('thingsItems').orderBy('order').get();
+                if (!thingsSnap.empty) {
+                    CONFIG.thingsItems = thingsSnap.docs.map(doc => {
+                        const d = doc.data();
+                        return {
+                            title: d.title || '',
+                            description: d.description || '',
+                            link: d.link || '#',
+                            image: d.image || ''
+                        };
+                    });
+                }
+                
+                // Load research items
+                const researchSnap = await db.collection('researchItems').orderBy('order').get();
+                if (!researchSnap.empty) {
+                    CONFIG.researchItems = researchSnap.docs.map(doc => ({
+                        title: doc.data().title || '',
+                        link: doc.data().link || '#'
+                    }));
+                }
+                
+                console.log('Loaded content from Firebase');
+            } catch (err) {
+                console.log('Firebase load failed, using CONFIG defaults:', err.message);
+            }
+        }
+        let db = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+        } catch(e) {
+            console.log('Firebase not available, using CONFIG fallback');
+        }
+
         // CONFIGURATION OBJECT - Edit these values to customize your site
         const CONFIG = {
             // Site basic info
@@ -2436,8 +2543,10 @@
                 bubble.setAttribute("data-float", floatClass);
                 bubble.innerHTML = `
                     <div class="bubble-content">
+                        ${product.image ? '<img src="' + product.image + '" style="width:60%;height:60%;object-fit:cover;border-radius:50%;position:absolute;top:20%;left:20%;opacity:0.8;">' : ''}
                         <div class="bubble-name">${product.name}</div>
                         <div class="bubble-price">${product.price}</div>
+                        ${product.sold ? '<div style="position:absolute;top:8px;right:8px;background:#db7c87;color:white;font-size:9px;padding:2px 6px;border-radius:10px;font-weight:700;letter-spacing:0.05em;">SOLD</div>' : ''}
                     </div>
                 `;
                 bubble.onclick = () => openProductModal(index);
@@ -3082,7 +3191,8 @@
         // INITIALIZE ON LOAD
         // ============================================
 
-        function fullInit() {
+        async function fullInit() {
+            await loadFromFirebase();
             initializeSite();
             initializeMusic();
             // Dismiss loading screen
