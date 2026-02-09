@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- v8 deployed -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1662,6 +1661,138 @@
         body.dark-mode .bubble { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
         body.dark-mode .research-card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
 
+        /* ===== CUSTOM SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(252, 217, 220, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(219, 124, 135, 0.35);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(219, 124, 135, 0.55);
+        }
+        body.dark-mode ::-webkit-scrollbar-track {
+            background: rgba(42, 26, 29, 0.4);
+        }
+        body.dark-mode ::-webkit-scrollbar-thumb {
+            background: rgba(219, 124, 135, 0.3);
+        }
+        /* Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(219, 124, 135, 0.35) rgba(252, 217, 220, 0.2);
+        }
+
+        /* ===== CURSOR SPARKLE PARTICLES ===== */
+        .cursor-sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            width: 8px;
+            height: 8px;
+            opacity: 1;
+            transition: none;
+        }
+        .cursor-sparkle::before,
+        .cursor-sparkle::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(to bottom, transparent, rgba(219,124,135,0.8) 40%, #fff 50%, rgba(219,124,135,0.8) 60%, transparent);
+        }
+        .cursor-sparkle::before {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .cursor-sparkle::after {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(to right, transparent, rgba(219,124,135,0.8) 40%, #fff 50%, rgba(219,124,135,0.8) 60%, transparent);
+        }
+
+        /* ===== SCROLL-TRIGGERED ANIMATIONS ===== */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .scroll-reveal-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .scroll-reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .scroll-reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .scroll-reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ===== BACK TO TOP BUTTON ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 32px;
+            left: 32px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 233, 235, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(219, 124, 135, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+            z-index: 100;
+        }
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            background: rgba(219, 124, 135, 0.2);
+            transform: translateY(-3px);
+        }
+        .back-to-top svg {
+            width: 18px;
+            height: 18px;
+            stroke: #db7c87;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        body.dark-mode .back-to-top {
+            background: rgba(42, 26, 29, 0.8);
+            border-color: rgba(219, 124, 135, 0.2);
+        }
+        body.dark-mode .back-to-top:hover {
+            background: rgba(60, 35, 40, 0.9);
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .header, .nav-container {
@@ -2283,6 +2414,11 @@
         </svg>
     </div>
 
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" title="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </button>
+
     <script>
         // ============================================
         // APPLICATION STATE & INITIALIZATION
@@ -2299,8 +2435,10 @@
             setupEventListeners();
             loadBubblePositions();
             initializeCustomCursor();
+            addScrollRevealClasses();
             setupIntersectionObservers();
-                    initParallax();
+            initParallax();
+            initBackToTop();
         }
 
         // ============================================
@@ -2321,8 +2459,9 @@
                 return; // Don't use custom cursor on touch devices
             }
 
-            let trailPositions = [];
             const mouseGlow = document.getElementById("mouseGlow");
+            let sparkleCount = 0;
+            let lastSparkleTime = 0;
 
             document.addEventListener('mousemove', (e) => {
                 const x = e.clientX;
@@ -2331,6 +2470,29 @@
                 // Update glow follow
                 mouseGlow.style.left = (x - 100) + 'px';
                 mouseGlow.style.top = (y - 100) + 'px';
+
+                // Spawn sparkle particles (throttled)
+                const now = Date.now();
+                if (now - lastSparkleTime < 60) return;
+                lastSparkleTime = now;
+
+                const sparkle = document.createElement('div');
+                sparkle.className = 'cursor-sparkle';
+                const size = 4 + Math.random() * 8;
+                sparkle.style.width = size + 'px';
+                sparkle.style.height = size + 'px';
+                sparkle.style.left = (x - size / 2 + (Math.random() - 0.5) * 20) + 'px';
+                sparkle.style.top = (y - size / 2 + (Math.random() - 0.5) * 20) + 'px';
+                document.body.appendChild(sparkle);
+
+                // Animate out
+                requestAnimationFrame(() => {
+                    sparkle.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    sparkle.style.opacity = '0';
+                    sparkle.style.transform = 'translateY(-15px) scale(0.3) rotate(' + (Math.random() * 90) + 'deg)';
+                });
+
+                setTimeout(() => sparkle.remove(), 650);
             });
         }
 
@@ -2341,7 +2503,7 @@
         function setupIntersectionObservers() {
             const observerOptions = {
                 threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
+                rootMargin: '0px 0px -40px 0px'
             };
 
             const observer = new IntersectionObserver((entries) => {
@@ -2353,12 +2515,42 @@
                 });
             }, observerOptions);
 
-            // Observe card items on home page
-            document.querySelectorAll('.card-item').forEach(card => {
-                observer.observe(card);
+            // Observe all scroll-reveal elements across every page
+            document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-scale').forEach(el => {
+                observer.observe(el);
             });
+        }
 
-            // Thought cards and other elements already have staggered animations via CSS
+        // Add scroll-reveal classes to dynamically created elements
+        function addScrollRevealClasses() {
+            // Thought cards
+            document.querySelectorAll('.thought-card').forEach((card, i) => {
+                card.classList.add('scroll-reveal');
+                card.style.transitionDelay = (i * 0.06) + 's';
+            });
+            // Shop bubbles
+            document.querySelectorAll('.bubble').forEach((bubble, i) => {
+                bubble.classList.add('scroll-reveal-scale');
+                bubble.style.transitionDelay = (i * 0.05) + 's';
+            });
+            // Moodboard item cards
+            document.querySelectorAll('.item-card').forEach((card, i) => {
+                card.classList.add('scroll-reveal');
+                card.style.transitionDelay = (i * 0.06) + 's';
+            });
+            // Research cards
+            document.querySelectorAll('.research-card').forEach((card, i) => {
+                card.classList.add('scroll-reveal-left');
+                card.style.transitionDelay = (i * 0.07) + 's';
+            });
+            // Page titles and subtitles
+            document.querySelectorAll('.page-title, .page-subtitle').forEach(el => {
+                el.classList.add('scroll-reveal');
+            });
+            // Filter bar
+            document.querySelectorAll('.filter-bar').forEach(el => {
+                el.classList.add('scroll-reveal');
+            });
         }
 
         // ============================================
@@ -2416,7 +2608,8 @@
                 pageEl.classList.add("active");
                 currentPage = pageName;
 
-                // Reinitialize observers on new page
+                // Reinitialize scroll animations on new page
+                addScrollRevealClasses();
                 setupIntersectionObservers();
 
                 // Add stagger delay to thought cards on thoughts page
@@ -3302,6 +3495,27 @@
         // Load first track on startup
         function initializeMusic() {
             loadTrack(0);
+        }
+
+        // ============================================
+        // BACK TO TOP BUTTON
+        // ============================================
+
+        function initBackToTop() {
+            const btn = document.getElementById('backToTop');
+            if (!btn) return;
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    btn.classList.add('show');
+                } else {
+                    btn.classList.remove('show');
+                }
+            }, { passive: true });
+
+            btn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
         }
 
         // ============================================
