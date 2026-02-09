@@ -438,26 +438,22 @@
         /* ===== MARQUEE SCROLL CONTAINER ===== */
         .cards-grid {
             display: flex;
-            gap: 40px;
             padding-bottom: 40px;
             overflow: hidden;
             width: 100%;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .cards-grid.dragging {
+            cursor: grabbing;
         }
 
         .marquee-track {
             display: flex;
-            gap: 40px;
-            animation: marqueeScroll 25s linear infinite;
+            gap: 50px;
             will-change: transform;
-        }
-
-        .marquee-track:hover {
-            animation-play-state: paused;
-        }
-
-        @keyframes marqueeScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
         }
 
         .card-item {
@@ -484,19 +480,19 @@
 
         /* ===== HEART SHAPE ===== */
         .card-image {
-            width: 220px;
-            height: 220px;
+            width: 320px;
+            height: 320px;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: rgba(255, 255, 255, 0.7);
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 500;
             letter-spacing: 1px;
             position: relative;
             overflow: hidden;
-            clip-path: path('M110 190 C110 190 20 130 20 75 C20 45 45 20 75 20 C95 20 108 35 110 45 C112 35 125 20 145 20 C175 20 200 45 200 75 C200 130 110 190 110 190 Z');
+            clip-path: path('M160 280 C160 280 28 190 28 108 C28 64 64 28 108 28 C138 28 156 50 160 64 C164 50 182 28 212 28 C256 28 292 64 292 108 C292 190 160 280 160 280 Z');
             transition: all 0.4s ease;
         }
 
@@ -1701,13 +1697,9 @@
             }
 
             .card-image {
-                width: 160px;
-                height: 160px;
-                clip-path: path('M80 145 C80 145 15 100 15 57 C15 34 34 15 57 15 C72 15 82 27 80 34 C78 27 88 15 103 15 C126 15 145 34 145 57 C145 100 80 145 80 145 Z');
-            }
-
-            .marquee-track {
-                animation-duration: 18s;
+                width: 220px;
+                height: 220px;
+                clip-path: path('M110 190 C110 190 20 130 20 75 C20 45 45 20 75 20 C95 20 108 35 110 45 C112 35 125 20 145 20 C175 20 200 45 200 75 C200 130 110 190 110 190 Z');
             }
 
             .thoughts-grid, .items-grid, .research-grid {
@@ -2489,6 +2481,131 @@
             document.getElementById("researchQuoteAuthor").textContent = CONFIG.quotes.research.author;
         }
 
+        // ============================================
+        // MARQUEE WITH DRAG SUPPORT
+        // ============================================
+
+        function initMarquee(container, track) {
+            let position = 0;
+            let autoSpeed = -0.8; // pixels per frame (negative = scroll left)
+            let velocity = 0;
+            let isDraggingMarquee = false;
+            let dragStartX = 0;
+            let dragStartPos = 0;
+            let lastDragX = 0;
+            let lastDragTime = 0;
+            let animId = null;
+            let userDragged = false;
+
+            // Get width of one set of cards (1/3 of total since we have 3 copies)
+            function getSetWidth() {
+                return track.scrollWidth / 3;
+            }
+
+            // Start position at the first set
+            position = 0;
+
+            function update() {
+                if (!isDraggingMarquee) {
+                    if (userDragged) {
+                        // After drag release, decelerate then resume auto-scroll
+                        velocity *= 0.95;
+                        position += velocity;
+                        if (Math.abs(velocity) < 0.5) {
+                            velocity = 0;
+                            userDragged = false;
+                        }
+                    } else {
+                        position += autoSpeed;
+                    }
+                }
+
+                // Seamless wrap: keep position within middle set
+                const setW = getSetWidth();
+                if (position <= -setW) {
+                    position += setW;
+                } else if (position >= 0) {
+                    position -= setW;
+                }
+
+                track.style.transform = 'translateX(' + position + 'px)';
+                animId = requestAnimationFrame(update);
+            }
+
+            // Mouse drag
+            container.addEventListener('mousedown', (e) => {
+                isDraggingMarquee = true;
+                userDragged = true;
+                dragStartX = e.clientX;
+                dragStartPos = position;
+                lastDragX = e.clientX;
+                lastDragTime = Date.now();
+                container.classList.add('dragging');
+                e.preventDefault();
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDraggingMarquee) return;
+                const dx = e.clientX - dragStartX;
+                position = dragStartPos + dx;
+
+                // Track velocity for momentum
+                const now = Date.now();
+                const dt = now - lastDragTime;
+                if (dt > 0) {
+                    velocity = (e.clientX - lastDragX) / dt * 16;
+                }
+                lastDragX = e.clientX;
+                lastDragTime = now;
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (isDraggingMarquee) {
+                    isDraggingMarquee = false;
+                    container.classList.remove('dragging');
+                }
+            });
+
+            // Touch drag
+            container.addEventListener('touchstart', (e) => {
+                isDraggingMarquee = true;
+                userDragged = true;
+                dragStartX = e.touches[0].clientX;
+                dragStartPos = position;
+                lastDragX = e.touches[0].clientX;
+                lastDragTime = Date.now();
+            }, { passive: true });
+
+            container.addEventListener('touchmove', (e) => {
+                if (!isDraggingMarquee) return;
+                const dx = e.touches[0].clientX - dragStartX;
+                position = dragStartPos + dx;
+
+                const now = Date.now();
+                const dt = now - lastDragTime;
+                if (dt > 0) {
+                    velocity = (e.touches[0].clientX - lastDragX) / dt * 16;
+                }
+                lastDragX = e.touches[0].clientX;
+                lastDragTime = now;
+            }, { passive: true });
+
+            container.addEventListener('touchend', () => {
+                isDraggingMarquee = false;
+            }, { passive: true });
+
+            // Prevent clicks on cards during drag
+            container.addEventListener('click', (e) => {
+                if (Math.abs(velocity) > 2) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, true);
+
+            // Start the loop
+            update();
+        }
+
         function populateHomeCard() {
             const cardsGrid = document.getElementById("cardsScroll");
             cardsGrid.innerHTML = "";
@@ -2513,11 +2630,15 @@
                 });
             }
 
-            // Build cards twice for seamless loop
+            // Build cards 3x for seamless loop in both directions
+            buildCards(track);
             buildCards(track);
             buildCards(track);
 
             cardsGrid.appendChild(track);
+
+            // Initialize marquee with drag support
+            initMarquee(cardsGrid, track);
 
             // Add sparkle elements to home page quote section for 80s glam
             const homeQuoteSection = document.querySelector(".home-page .quote-section");
