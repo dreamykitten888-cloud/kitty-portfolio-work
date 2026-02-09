@@ -328,26 +328,50 @@
             padding-top: 100px;
         }
 
-        /* Sparkle overlay for 80s glam */
+        /* Star sparkle overlay */
         @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 1; transform: scale(1); }
+            0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(90deg); }
         }
 
         .sparkle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #db7c87;
-            border-radius: 50%;
-            box-shadow: 0 0 6px 2px rgba(219,124,135,0.6);
+            width: 8px;
+            height: 8px;
+            background: transparent;
+            border-radius: 0;
             pointer-events: none;
             animation: twinkle 3s ease-in-out infinite;
         }
 
-        .sparkle.gold {
-            background: #FFD700;
-            box-shadow: 0 0 8px 2px rgba(255,215,0,0.6);
+        /* 4-pointed star via layered pseudo-elements */
+        .sparkle::before,
+        .sparkle::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(to bottom, transparent 0%, rgba(219,124,135,0.9) 40%, #fff 50%, rgba(219,124,135,0.9) 60%, transparent 100%);
+            border-radius: 50%;
+        }
+        .sparkle::before {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+        .sparkle::after {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .sparkle.gold::before {
+            background: linear-gradient(to bottom, transparent 0%, rgba(255,215,0,0.9) 40%, #fff 50%, rgba(255,215,0,0.9) 60%, transparent 100%);
+        }
+        .sparkle.gold::after {
+            background: linear-gradient(to right, transparent 0%, rgba(255,215,0,0.9) 40%, #fff 50%, rgba(255,215,0,0.9) 60%, transparent 100%);
         }
 
         /* Mouse-follow glow effect */
@@ -2373,8 +2397,9 @@
                     sparkle.style.top = Math.random() * 100 + "%";
                     sparkle.style.animationDelay = (Math.random() * 4) + "s";
                     sparkle.style.animationDuration = (2 + Math.random() * 3) + "s";
-                    sparkle.style.width = (2 + Math.random() * 6) + "px";
-                    sparkle.style.height = sparkle.style.width;
+                    const starSize = (6 + Math.random() * 14) + "px";
+                    sparkle.style.width = starSize;
+                    sparkle.style.height = starSize;
                     homeQuoteSection.appendChild(sparkle);
                 }
             }
